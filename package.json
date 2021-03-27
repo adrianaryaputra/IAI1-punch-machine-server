@@ -1,0 +1,17 @@
+{
+  "name": "iai1-punch-machine-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "adrianaryaputra",
+  "license": "MIT",
+  "dependencies": {
+    "aedes": "^0.45.0",
+    "express": "^4.17.1",
+    "ws": "^1.1.5"
+  }
+}
