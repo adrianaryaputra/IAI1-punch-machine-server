@@ -15,7 +15,9 @@ function ws_send(command, value) {
     }))
 }
       
-function ws_onOpen(evt) {}
+function ws_onOpen(evt) {
+    ws_send("GET_STATE", true);
+}
       
 function ws_onClose(evt) {
     location.reload();

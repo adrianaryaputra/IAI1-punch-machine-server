@@ -19,20 +19,33 @@ app.listen(cfg.WEB.PORT, () => {
 
 
 // mq sub -> ws pub
-aedes.on("client", c => console.log(c.id, "Connected"));
-aedes.on("clientDisconnect", c => console.log(c.id, "Disconnected"));
-aedes.subscribe("MP/#", (a,b) => {
-    console.log(a.topic);
-    console.log(JSON.parse(a.payload.toString(),null,2));
-    wss.clients.forEach(client => {
-        if(client.readyState == WebSocket.OPEN) {
-            client.send(JSON.stringify({
-                topic: a.topic,
-                payload: JSON.parse(a.payload.toString())
-            }))
-        }
-    })
-    b();
+const deviceState = {};
+aedes.on("clientReady", c => {
+    ws_broadcast(c.id, "DEVICE_STATUS", true);
+    mq_publish(`MP/${c.id}/SERVER_STATE`, deviceState[c.id]);
+});
+aedes.on("clientDisconnect", c => ws_broadcast(c.id, "DEVICE_STATUS", false));
+aedes.subscribe("MP/#", (a,cb) => {
+    const topic = a.topic.split('/');
+    const name = topic[1];
+    const command = topic[2];
+    const msg = JSON.parse(a.payload.toString());
+    deviceState[name] = deviceState[name] ?? {};
+
+    switch(command) {
+        case "SERVER_STATE":
+        case "DRIVE_THREAD_FORWARD":
+        case "DRIVE_THREAD_REVERSE":
+            break;
+        // case "DRIVE_COUNTER_CV":
+        //     break;
+        default:
+            if(msg.success) {
+                deviceState[name][command] = msg.payload;
+                ws_broadcast(name, command, msg.payload);
+            }
+    }
+    cb();
 });
 
 
@@ -41,6 +54,45 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         parsedMsg = JSON.parse(message);
         console.log(parsedMsg);
-        // ws_handleIncoming(ws, parsedMsg.command, parsedMsg.value);
+        ws_handleIncoming(ws, parsedMsg.command, parsedMsg.value);
     });
 });
+
+
+
+function ws_broadcast(device, command, payload) {
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({
+                device,
+                command, 
+                payload,
+            }));
+        }
+    });
+}
+
+
+
+function mq_publish(topic, payload) {
+    aedes.publish({
+        topic,
+        payload: JSON.stringify({
+            success: true,
+            payload
+        })
+    });
+}
+
+
+
+function ws_handleIncoming(client, command, value) {
+    switch(command) {
+        case "GET_STATE":
+            client.send(JSON.stringify({
+                command,
+                payload: deviceState
+            }));
+            break;
+    }
+}
