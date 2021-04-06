@@ -31,6 +31,7 @@ function ws_onMessage(evt) {
     switch(parsedEvt.command){
         case "SERVER_STATE":
             for (const deviceName in parsedEvt.payload) {
+                console.log("name", deviceName);
                 devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {parent: document.body});
             }
         case "STATE":
