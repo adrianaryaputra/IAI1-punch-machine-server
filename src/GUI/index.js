@@ -33,6 +33,7 @@ function ws_onMessage(evt) {
                 console.log("creating", deviceName);
                 devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {parent: document.body});
             }
+            break;
         case "STATE":
             if(devices[parsedEvt.device]) {
                 devices[parsedEvt.device].update(parsedEvt.payload);
@@ -40,6 +41,7 @@ function ws_onMessage(evt) {
                 devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {parent: document.body});
                 console.log("creating", deviceName);
             }
+            break;
     }
 }
       
