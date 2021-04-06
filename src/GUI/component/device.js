@@ -5,8 +5,8 @@ export default class Device extends BasicComponent{
     constructor(name, state = {}, options) {
         super(options);
         this.name = name;
-        this.state = state;
         this.draw();
+        this.update(state);
     }
 
     update(state) {
