@@ -26,10 +26,8 @@ function ws_onClose(evt) {
 function ws_onMessage(evt) {
     let parsedEvt = JSON.parse(evt.data);
     console.log(parsedEvt);
-    // split topic
-    let topic = parsedEvt.topic.split("/")
     // check if device exist; if not create a new one
-    if(device[topic[1]] === "undefined") device[topic[1]] = {}
+    // if(device[topic[1]] === "undefined") device[topic[1]] = {}
     // check if 
     // let a = document.createElement("p").textContent(parsedEvt)
     // document.body.appendChild();
