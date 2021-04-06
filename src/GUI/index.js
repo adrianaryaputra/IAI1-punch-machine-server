@@ -1,3 +1,5 @@
+import Device from './component/device.js';
+
 var wsUri = `ws://${location.hostname}:${+location.port+1}`;
 var websocket = new WebSocket(wsUri);
 
@@ -26,11 +28,17 @@ function ws_onClose(evt) {
 function ws_onMessage(evt) {
     let parsedEvt = JSON.parse(evt.data);
     console.log(parsedEvt);
-    // check if device exist; if not create a new one
-    // if(device[topic[1]] === "undefined") device[topic[1]] = {}
-    // check if 
-    // let a = document.createElement("p").textContent(parsedEvt)
-    // document.body.appendChild();
+    switch(parsedEvt.command){
+        case "SERVER_STATE":
+            for (const deviceName in parsedEvt.payload) {
+                devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {parent: document.body});
+            }
+        case "STATE":
+            if(devices[parsedEvt.device] === "undefined") {
+                devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {parent: document.body})
+            }
+            else devices[parsedEvt.device].update(parsedEvt.payload);
+    }
 }
       
 function ws_onError(evt) {
@@ -38,7 +46,7 @@ function ws_onError(evt) {
     console.log(evt.data);
 }
 
-const device = {};
+const devices = {};
 
 const run = () => {
     ws_load();
