@@ -11,7 +11,22 @@ export default class Device extends BasicComponent{
 
     update(state) {
         this.state = state;
-        console.log(this);
+        for (const key in state) {
+            switch(key) {
+                case "DRIVE_COUNTER_CV":
+                    this.counter.setValue(state[key]);
+                    break;
+                case "DRIVE_SPEED":
+                    this.speed.setValue(state[key]);
+                    break;
+                case "DRIVE_LENGTH":
+                    this.speed.setValue(state[key]);
+                    break;
+                case "DEVICE_STATUS":
+                    this.onlineStatus.setValue(state[key] ? "ONLINE" : "OFFLINE");
+                    break;
+            }
+        }
         return this;
     }
 

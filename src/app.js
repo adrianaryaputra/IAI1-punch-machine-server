@@ -21,10 +21,14 @@ app.listen(cfg.WEB.PORT, () => {
 // mq sub -> ws pub
 const deviceState = {};
 aedes.on("clientReady", c => {
-    ws_broadcast(c.id, "DEVICE_STATUS", true);
+    deviceState[c.id]["DEVICE_STATUS"] = true;
+    ws_broadcast(c.id, "STATE", deviceState[c.id]);
     mq_publish(`MP/${c.id}/SERVER_STATE`, deviceState[c.id]);
 });
-aedes.on("clientDisconnect", c => ws_broadcast(c.id, "DEVICE_STATUS", false));
+aedes.on("clientDisconnect", c => {
+    deviceState[c.id]["DEVICE_STATUS"] = false;
+    ws_broadcast(c.id, "STATE", deviceState[c.id]);
+});
 aedes.subscribe("MP/#", (a,cb) => {
     const topic = a.topic.split('/');
     const name = topic[1];
