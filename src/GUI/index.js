@@ -33,11 +33,11 @@ function ws_onMessage(evt) {
             for (const deviceName in parsedEvt.payload) {
                 devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {parent: document.body});
             }
-        // case "STATE":
-        //     if(devices[parsedEvt.device] === "undefined") {
-        //         devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {parent: document.body})
-        //     }
-        //     else devices[parsedEvt.device].update(parsedEvt.payload);
+        case "STATE":
+            if(devices[parsedEvt.device] === "undefined") {
+                devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {parent: document.body})
+            }
+            else devices[parsedEvt.device].update(parsedEvt.payload);
     }
 }
       

@@ -12,20 +12,22 @@ export default class LabelText extends BasicComponent{
 
         // set holder style
         this.stylize(this.element(), {
-            display: "inline-block"
+            display: "flex"
         });
 
 
         this.elem.label = document.createElement("h3");
         this.element().appendChild(this.elem.label);
+        this.setLabel(this.label);
         this.stylize(this.elem.label, {
-            display: "block"
+            margin: "0"
         });
 
         this.elem.value = document.createElement("h3");
         this.element().appendChild(this.elem.value);
+        this.setValue(this.value)
         this.stylize(this.elem.value, {
-            display: "block"
+            margin: "0"
         });
     }
 

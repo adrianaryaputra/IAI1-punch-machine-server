@@ -17,10 +17,10 @@ export default class Device extends BasicComponent{
 
     draw() {
         this.deviceName = new LabelText("", this.name, { parent:this.element() });
-        this.onlineStatus = new LabelText("status: ", "", { parent:this.element() });
-        this.counter = new LabelText("counter: ", "", { parent:this.element() });
-        this.speed = new LabelText("speed: ", "", { parent:this.element() });
-        this.length = new LabelText("length: ", "", { parent:this.element() });
+        this.onlineStatus = new LabelText("status : ", "", { parent:this.element() });
+        this.counter = new LabelText("counter : ", "", { parent:this.element() });
+        this.speed = new LabelText("speed : ", "", { parent:this.element() });
+        this.length = new LabelText("length : ", "", { parent:this.element() });
     }
 
 }
