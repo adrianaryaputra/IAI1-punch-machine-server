@@ -21,11 +21,13 @@ app.listen(cfg.WEB.PORT, () => {
 // mq sub -> ws pub
 const deviceState = {};
 aedes.on("clientReady", c => {
+    if(deviceState[c.id] === "undefined") deviceState[c.id] = {};
     deviceState[c.id]["DEVICE_STATUS"] = true;
     ws_broadcast(c.id, "STATE", deviceState[c.id]);
     mq_publish(`MP/${c.id}/SERVER_STATE`, deviceState[c.id]);
 });
 aedes.on("clientDisconnect", c => {
+    if(deviceState[c.id] === "undefined") deviceState[c.id] = {};
     deviceState[c.id]["DEVICE_STATUS"] = false;
     ws_broadcast(c.id, "STATE", deviceState[c.id]);
 });
