@@ -41,7 +41,7 @@ aedes.subscribe("MP/#", (a,cb) => {
         default:
             if(msg.success) {
                 deviceState[name][command] = msg.payload;
-                ws_broadcast(name, command, msg.payload);
+                ws_broadcast(name, "STATE", deviceState[name]);
             }
     }
     cb();
