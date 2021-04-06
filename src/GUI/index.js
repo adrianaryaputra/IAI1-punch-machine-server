@@ -18,7 +18,6 @@ function ws_send(command, value) {
 }
       
 function ws_onOpen(evt) {
-    ws_send("GET_STATE", true);
 }
       
 function ws_onClose(evt) {
@@ -31,7 +30,7 @@ function ws_onMessage(evt) {
     switch(parsedEvt.command){
         case "SERVER_STATE":
             for (const deviceName in parsedEvt.payload) {
-                console.log("name", deviceName);
+                console.log("creating", deviceName);
                 devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {parent: document.body});
             }
         case "STATE":
@@ -39,6 +38,7 @@ function ws_onMessage(evt) {
                 devices[parsedEvt.device].update(parsedEvt.payload);
             } else {
                 devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {parent: document.body});
+                console.log("creating", deviceName);
             }
     }
 }
