@@ -20,7 +20,7 @@ export default class Device extends BasicComponent{
                     this.speed.setValue(state[key]);
                     break;
                 case "DRIVE_LENGTH":
-                    this.speed.setValue(state[key]);
+                    this.length.setValue(state[key]);
                     break;
                 case "DEVICE_STATUS":
                     this.onlineStatus.setValue(state[key] ? "ONLINE" : "OFFLINE");
