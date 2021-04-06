@@ -36,9 +36,8 @@ aedes.subscribe("MP/#", (a,cb) => {
         case "SERVER_STATE":
         case "DRIVE_THREAD_FORWARD":
         case "DRIVE_THREAD_REVERSE":
+        case "DRIVE_COUNTER_CV":
             break;
-        // case "DRIVE_COUNTER_CV":
-        //     break;
         default:
             if(msg.success) {
                 deviceState[name][command] = msg.payload;
@@ -51,6 +50,10 @@ aedes.subscribe("MP/#", (a,cb) => {
 
 // ws sub
 wss.on('connection', (ws) => {
+    ws.send(JSON.stringify({
+        command: "SERVER_STATE",
+        payload: deviceState
+    }));
     ws.on('message', (message) => {
         parsedMsg = JSON.parse(message);
         console.log(parsedMsg);
