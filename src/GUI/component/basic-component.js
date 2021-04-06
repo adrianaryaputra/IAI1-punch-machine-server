@@ -6,6 +6,7 @@ export default class BasicComponent {
         this.elem = {
             holder: document.createElement("div")
         };
+        if(this.parent) this.parent.appendChild(this.element());
     }
 
     element() {
