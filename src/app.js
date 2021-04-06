@@ -36,7 +36,7 @@ aedes.subscribe("MP/#", (a,cb) => {
         case "SERVER_STATE":
         case "DRIVE_THREAD_FORWARD":
         case "DRIVE_THREAD_REVERSE":
-        case "DRIVE_COUNTER_CV":
+        // case "DRIVE_COUNTER_CV":
             break;
         default:
             if(msg.success) {
