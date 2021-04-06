@@ -1,6 +1,6 @@
 import BasicComponent from './basic-component.js';
 import LabelText from './label-text.js';
-export class Device extends BasicComponent{
+export default class Device extends BasicComponent{
 
     constructor(name, state = {}, options) {
         super(options);

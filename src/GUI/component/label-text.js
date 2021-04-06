@@ -1,5 +1,5 @@
 import BasicComponent from './basic-component.js';
-export class LabelText extends BasicComponent{
+export default class LabelText extends BasicComponent{
 
     constructor(label, value, options) {
         super(options);

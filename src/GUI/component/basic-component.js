@@ -1,4 +1,4 @@
-export class BasicComponent {
+export default class BasicComponent {
 
     constructor({style, parent}) {
         this.style = style || {};
