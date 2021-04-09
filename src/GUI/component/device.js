@@ -38,12 +38,12 @@ export default class Device extends BasicComponent{
 
     draw() {
         this.deviceName     = new LabelText(this.name, "", { parent:this.element() });
-        this.onlineStatus   = new LabelText("status :", "", { parent:this.element() });
-        this.client         = new LabelText("client :", "", { parent:this.element() });
-        this.tebal          = new LabelText("tebal :", "", { parent:this.element() });
-        this.diameter       = new LabelText("diameter :", "", { parent:this.element() });
-        this.speed          = new LabelText("speed :", "", { parent:this.element() });
-        this.counter        = new LabelText("counter :", "", { parent:this.element() });
+        this.onlineStatus   = new LabelText("Status :", "", { parent:this.element() });
+        this.client         = new LabelText("Pelanggan :", "", { parent:this.element() });
+        this.tebal          = new LabelText("Tebal :", "", { parent:this.element() });
+        this.diameter       = new LabelText("Diameter :", "", { parent:this.element() });
+        this.speed          = new LabelText("Speed :", "", { parent:this.element() });
+        this.counter        = new LabelText("Counter :", "", { parent:this.element() });
     }
 
 }
