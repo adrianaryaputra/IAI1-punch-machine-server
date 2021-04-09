@@ -19,11 +19,17 @@ export default class Device extends BasicComponent{
                 case "DRIVE_SPEED":
                     this.speed.setValue(state[key]);
                     break;
-                case "DRIVE_LENGTH":
-                    this.length.setValue(state[key]);
-                    break;
                 case "DEVICE_STATUS":
                     this.onlineStatus.setValue(state[key] ? "ONLINE" : "OFFLINE");
+                    break;
+                case "STATS_NAMA_PELANGGAN":
+                    this.client.setValue(state[key]);
+                    break;
+                case "STATS_TEBAL_BAHAN":
+                    this.tebal.setValue(state[key]);
+                    break;
+                case "STATS_DIAMETER_PON":
+                    this.diameter.setValue(state[key]);
                     break;
             }
         }
@@ -31,11 +37,13 @@ export default class Device extends BasicComponent{
     }
 
     draw() {
-        this.deviceName = new LabelText("", this.name, { parent:this.element() });
-        this.onlineStatus = new LabelText("status : ", "", { parent:this.element() });
-        this.counter = new LabelText("counter : ", "", { parent:this.element() });
-        this.speed = new LabelText("speed : ", "", { parent:this.element() });
-        this.length = new LabelText("length : ", "", { parent:this.element() });
+        this.deviceName     = new LabelText("", this.name, { parent:this.element() });
+        this.onlineStatus   = new LabelText("status : ", "", { parent:this.element() });
+        this.client         = new LabelText("client : ", "", { parent:this.element() });
+        this.tebal          = new LabelText("tebal : ", "", { parent:this.element() });
+        this.diameter       = new LabelText("diameter : ", "", { parent:this.element() });
+        this.speed          = new LabelText("speed : ", "", { parent:this.element() });
+        this.counter        = new LabelText("counter : ", "", { parent:this.element() });
     }
 
 }

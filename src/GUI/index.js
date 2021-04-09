@@ -23,6 +23,13 @@ function ws_onOpen(evt) {
 function ws_onClose(evt) {
     location.reload();
 }
+
+let deviceStyle = {
+    margin: "1em",
+    padding: "1em",
+    backgroundColor: "#222",
+    borderRadius: "1em"
+}
       
 function ws_onMessage(evt) {
     let parsedEvt = JSON.parse(evt.data);
@@ -31,14 +38,20 @@ function ws_onMessage(evt) {
         case "SERVER_STATE":
             for (const deviceName in parsedEvt.payload) {
                 console.log("creating", deviceName);
-                devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {parent: document.body});
+                devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {
+                    parent: document.body,
+                    style: deviceStyle,
+                });
             }
             break;
         case "STATE":
             if(devices[parsedEvt.device]) {
                 devices[parsedEvt.device].update(parsedEvt.payload);
             } else {
-                devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {parent: document.body});
+                devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {
+                    parent: document.body,
+                    style: deviceStyle,
+                });
                 console.log("creating", deviceName);
             }
             break;
