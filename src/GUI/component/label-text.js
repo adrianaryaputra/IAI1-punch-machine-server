@@ -20,7 +20,7 @@ export default class LabelText extends BasicComponent{
         this.element().appendChild(this.elem.label);
         this.setLabel(this.label);
         this.stylize(this.elem.label, {
-            margin: "0"
+            margin: "0 5px 0 0"
         });
 
         this.elem.value = document.createElement("h3");
