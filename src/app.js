@@ -39,6 +39,9 @@ aedes.subscribe("MP/#", (a,cb) => {
     deviceState[name] = deviceState[name] ?? {};
 
     switch(command) {
+        case "GET_STATE":
+            mq_publish(`MP/${name}/SERVER_STATE`, deviceState[name]);
+            break;
         case "SERVER_STATE":
         case "DRIVE_THREAD_FORWARD":
         case "DRIVE_THREAD_REVERSE":
