@@ -36,22 +36,30 @@ aedes.subscribe("MP/#", (a,cb) => {
     const name = topic[1];
     const command = topic[2];
     const msg = JSON.parse(a.payload.toString());
-    deviceState[name] = deviceState[name] ?? {};
+    deviceState[name] = deviceState[name] || {};
 
-    switch(command) {
-        case "GET_STATE":
-            mq_publish(`MP/${name}/SERVER_STATE`, deviceState[name]);
-            break;
-        case "SERVER_STATE":
-        case "DRIVE_THREAD_FORWARD":
-        case "DRIVE_THREAD_REVERSE":
-        // case "DRIVE_COUNTER_CV":
-            break;
-        default:
-            if(msg.success) {
+    if(msg.success){
+        switch(command) {
+            case "GET_STATE":
+                mq_publish(`MP/${name}/SERVER_STATE`, deviceState[name]);
+                break;
+            case "SERVER_STATE":
+            // case "DRIVE_COUNTER_CV":
+                break;
+            case "STATS_PUNCHING":
+                deviceState[name].STATS_TOTAL_COUNT = deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload;
+                ws_broadcast(name, "STATE", deviceState[name]);
+                break;
+            case "STATS_NAMA_PELANGGAN":
+            case "STATS_DIAMETER_PON":
+            case "STATS_TEBAL_BAHAN":
+                deviceState[name].STATS_TOTAL_COUNT = 0;
+                ws_broadcast(name, "STATE", deviceState[name]);
+                break;
+            default:
                 deviceState[name][command] = msg.payload;
                 ws_broadcast(name, "STATE", deviceState[name]);
-            }
+        }
     }
     cb();
 });

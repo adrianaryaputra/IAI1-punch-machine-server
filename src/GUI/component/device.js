@@ -40,6 +40,9 @@ export default class Device extends BasicComponent{
                 case "STATS_DIAMETER_PON":
                     this.diameter.setValue(state[key]);
                     break;
+                case "STATS_TOTAL_COUNT":
+                    this.diameter.setValue(state[key]);
+                    break;
             }
         }
         return this;
@@ -53,6 +56,7 @@ export default class Device extends BasicComponent{
         this.diameter       = new LabelText("Diameter :", "", { parent:this.element() });
         this.speed          = new LabelText("Speed :", "", { parent:this.element() });
         this.counter        = new LabelText("Counter :", "", { parent:this.element() });
+        this.countersum     = new LabelText("Total Count :", "", { parent:this.element() });
     }
 
 }
