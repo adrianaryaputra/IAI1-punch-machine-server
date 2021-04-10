@@ -1,0 +1,38 @@
+version: '3'
+
+services: 
+
+  mongo-mesin-iai1:
+    container_name: iai1-mesin-mongo
+    restart: always
+    image: mongo
+    ports: 
+      - '27018:27017'
+    volumes: 
+      - ~/mongo/iai1:/data/db 
+  
+  app-mesin-iai1:
+    container_name: iai1-mesin-app
+    restart: always
+    build: ./app-service/
+    ports:
+      - '5001:5001'
+      - '8889:8889'
+    links: 
+      - mongo-mesin-iai1
+    environment: 
+      - MQ_PORT=5001
+      - WS_PORT=8889
+      - DB_LINK=mongodb://mongo-mesin-iai1:27017/iai1
+
+  web-mesin-iai1:
+    container_name: iai1-mesin-web
+    restart: always
+    build: ./web-service/
+    ports:
+      - '8888:8888'
+    environment: 
+      - WEB_PORT=8888
+    volumes: 
+      - ./web-service/src/GUI:/usr/src/app/src/GUI
+  

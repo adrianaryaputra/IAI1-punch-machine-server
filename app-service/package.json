@@ -1,0 +1,17 @@
+{
+  "name": "app-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "adrianaryaputra",
+  "license": "MIT",
+  "dependencies": {
+    "aedes": "^0.45.0",
+    "mongoose": "^5.12.3",
+    "ws": "^7.4.4"
+  }
+}
