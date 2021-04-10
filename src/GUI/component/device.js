@@ -7,10 +7,19 @@ export default class Device extends BasicComponent{
         this.name = name;
         this.draw();
         this.update(state);
+        this.stylize(this.element(), {backgroundColor: "rgba(0,255,0,0.3)"});
+        this.noInput = this.onNoInputTimeout(5000);
+    }
+
+    onNoInputTimeout(t) {
+        return setTimeout(() => this.stylize(this.element(), {backgroundColor: "rgba(255,0,0,0.3)"}), t);
     }
 
     update(state) {
+        this.stylize(this.element(), {backgroundColor: "rgba(0,255,0,0.3)"})
         this.state = state;
+        clearTimeout(this.noInput);
+        this.noInput = this.onNoInputTimeout(5000);
         for (const key in state) {
             switch(key) {
                 case "DRIVE_COUNTER_CV":

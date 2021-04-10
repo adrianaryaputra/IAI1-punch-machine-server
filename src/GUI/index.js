@@ -27,7 +27,6 @@ function ws_onClose(evt) {
 let deviceStyle = {
     margin: "1em",
     padding: "1em",
-    backgroundColor: "#222",
     borderRadius: "1em"
 }
       
