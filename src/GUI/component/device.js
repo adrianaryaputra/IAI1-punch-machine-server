@@ -41,7 +41,7 @@ export default class Device extends BasicComponent{
                     this.diameter.setValue(state[key]);
                     break;
                 case "STATS_TOTAL_COUNT":
-                    this.diameter.setValue(state[key]);
+                    this.countersum.setValue(state[key]);
                     break;
             }
         }
