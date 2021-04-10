@@ -37,7 +37,7 @@ export default class Device extends BasicComponent{
                 case "STATS_TEBAL_BAHAN":
                     this.tebal.setValue(state[key]);
                     break;
-                case "STATS_DIAMETER_PON":
+                case "STATS_UKURAN_BAHAN":
                     this.diameter.setValue(state[key]);
                     break;
                 case "STATS_TOTAL_COUNT":
