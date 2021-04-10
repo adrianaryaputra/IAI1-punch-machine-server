@@ -54,6 +54,7 @@ aedes.subscribe("MP/#", (a,cb) => {
             case "STATS_DIAMETER_PON":
             case "STATS_TEBAL_BAHAN":
                 deviceState[name].STATS_TOTAL_COUNT = 0;
+                deviceState[name][command] = msg.payload;
                 ws_broadcast(name, "STATE", deviceState[name]);
                 break;
             default:
