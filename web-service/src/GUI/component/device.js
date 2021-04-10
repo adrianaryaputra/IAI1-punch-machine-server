@@ -55,7 +55,7 @@ export default class Device extends BasicComponent{
         this.tebal          = new LabelText("Tebal :", "", { parent:this.element() });
         this.diameter       = new LabelText("Diameter :", "", { parent:this.element() });
         this.speed          = new LabelText("Speed :", "", { parent:this.element() });
-        this.counter        = new LabelText("Counter :", "", { parent:this.element() });
+        // this.counter        = new LabelText("Counter :", "", { parent:this.element() });
         this.countersum     = new LabelText("Total Count :", "", { parent:this.element() });
     }
 
