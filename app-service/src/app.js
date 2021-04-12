@@ -1,7 +1,7 @@
 let deviceState = {};
 
 // database import
-const mongoose = require('mongoose');
+const {mongoose, stateDB, eventDB} = require('./orm');
 mongoose.connect(process.env.DB_LINK, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -24,9 +24,6 @@ db.once('open', async () => {
         console.error(e);
     }
 })
-
-const stateDB = require('./state.model')(mongoose);
-const eventDB = require('./event.model')(mongoose);
 
 
 // mq import
