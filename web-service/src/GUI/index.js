@@ -21,7 +21,7 @@ function ws_onOpen(evt) {
 }
       
 function ws_onClose(evt) {
-    location.reload();
+    ws_load();
 }
 
 let deviceStyle = {
