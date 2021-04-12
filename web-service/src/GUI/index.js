@@ -27,7 +27,6 @@ function ws_onClose(evt) {
 }
 
 let deviceStyle = {
-    margin: "1em",
     padding: "1em",
     borderRadius: "1em"
 }
@@ -70,9 +69,10 @@ const deviceHolder = new BasicComponent({
     parent: document.body,
     style: {
         display: "grid",
-        gridTemplateColumn: "repeat(4, auto)",
-        gridTemplateRow: "repeat(3, auto)",
-        gridAutoFlow: "row"
+        margin: "1em",
+        gridTemplateColumns: "repeat(auto-fit, minmax(450px, 1fr))",
+        gridAutoFlow: "row",
+        gap: "1em"
     }
 });
 

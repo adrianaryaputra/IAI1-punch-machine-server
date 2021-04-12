@@ -13,8 +13,12 @@ export default class LabelText extends BasicComponent{
         // set holder style
         this.stylize(this.element(), {
             display: "grid",
-            gridTemplateColumn: "minmax(100px,0.3fr) minmax(100px,0.6fr)",
-            gridAutoFlow: "row"
+            gap: ".5em",
+            gridTemplateColumns: "minmax(150px,0.3fr) minmax(250px,1fr)",
+            gridAutoFlow: "row",
+            // backgroundColor: "#000",
+            borderRadius: ".3em",
+            justifyItems: "stretch",
         });
 
 
@@ -22,19 +26,22 @@ export default class LabelText extends BasicComponent{
         this.element().appendChild(this.elem.label);
         this.setLabel(this.label);
         this.stylize(this.elem.label, {
-            margin: "0 5px 0 0"
+            padding: ".3em .5em",
         });
 
         this.elem.value = document.createElement("h3");
         this.element().appendChild(this.elem.value);
         this.setValue(this.value)
         this.stylize(this.elem.value, {
-            margin: "0"
+            backgroundColor: "var(--color-background)",
+            padding: ".3em .5em",
+            borderRadius: "inherit",
         });
     }
 
     setValue(val) {
         this.elem.value.innerText = val;
+        this.elem.value.style.after
     }
 
     setLabel(lbl) {
