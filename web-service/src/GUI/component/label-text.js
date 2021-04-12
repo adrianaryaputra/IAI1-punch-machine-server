@@ -13,8 +13,7 @@ export default class LabelText extends BasicComponent{
         // set holder style
         this.stylize(this.element(), {
             display: "grid",
-            gridTemplateColumn: "repeat(4, auto)",
-            gridTemplateRow: "repeat(3, auto)",
+            gridTemplateColumn: "minmax(100px,0.3fr) minmax(100px,0.6fr)",
             gridAutoFlow: "row"
         });
 

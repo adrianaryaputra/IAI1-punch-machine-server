@@ -1,4 +1,5 @@
 import Device from './component/device.js';
+import BasicComponent from './component/basic-component.js';
 
 var wsUri = `ws://${location.hostname}:${+location.port+1}`;
 var websocket = new WebSocket(wsUri);
@@ -39,7 +40,7 @@ function ws_onMessage(evt) {
             for (const deviceName in parsedEvt.payload) {
                 console.log("creating", deviceName);
                 devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {
-                    parent: document.body,
+                    parent: deviceHolder.element(),
                     style: deviceStyle,
                 });
             }
@@ -49,7 +50,7 @@ function ws_onMessage(evt) {
                 devices[parsedEvt.device].update(parsedEvt.payload);
             } else {
                 devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {
-                    parent: document.body,
+                    parent: deviceHolder.element(),
                     style: deviceStyle,
                 });
                 console.log("creating", deviceName);
@@ -64,6 +65,17 @@ function ws_onError(evt) {
 }
 
 const devices = {};
+
+const deviceHolder = new BasicComponent({
+    parent: document.body,
+    style: {
+        display: "grid",
+        gridTemplateColumn: "repeat(4, auto)",
+        gridTemplateRow: "repeat(3, auto)",
+        gridAutoFlow: "row"
+    }
+});
+
 
 const run = () => {
     ws_load();
