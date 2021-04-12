@@ -165,7 +165,8 @@ function db_createEvent({
     await eventDB.create({
         NAMA_MESIN: nama,
         EVENT: event,
-        VALUE: JSON.stringify(value)
+        VALUE: JSON.stringify(value),
+        TIMESTAMP: Date.now(),
     });
 }
 
