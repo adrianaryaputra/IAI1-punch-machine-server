@@ -12,7 +12,10 @@ export default class LabelText extends BasicComponent{
 
         // set holder style
         this.stylize(this.element(), {
-            display: "flex"
+            display: "grid",
+            gridTemplateColumn: "repeat(4, auto)",
+            gridTemplateRow: "repeat(3, auto)",
+            gridAutoFlow: "row"
         });
 
 

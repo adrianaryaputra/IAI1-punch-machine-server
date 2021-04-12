@@ -4,6 +4,7 @@ var wsUri = `ws://${location.hostname}:${+location.port+1}`;
 var websocket = new WebSocket(wsUri);
 
 function ws_load() {
+    console.log("opening websocket ...");
     websocket.onopen    = ws_onOpen;
     websocket.onclose   = ws_onClose;
     websocket.onmessage = ws_onMessage;
@@ -21,7 +22,7 @@ function ws_onOpen(evt) {
 }
       
 function ws_onClose(evt) {
-    ws_load();
+    setTimeout(ws_load, 1000);
 }
 
 let deviceStyle = {
