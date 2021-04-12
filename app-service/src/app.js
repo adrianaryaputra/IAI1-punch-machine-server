@@ -68,18 +68,33 @@ aedes.subscribe("MP/#", (a,cb) => {
             // case "DRIVE_COUNTER_CV":
                 break;
             case "STATS_PUNCHING":
+                db_createEvent({
+                    nama: name,
+                    event: command,
+                    value: msg.payload,
+                });
                 updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
                 ws_broadcast(name, "STATE", deviceState[name]);
                 break;
             case "STATS_NAMA_PELANGGAN":
             case "STATS_UKURAN_BAHAN":
             case "STATS_TEBAL_BAHAN":
+                db_createEvent({
+                    nama: name,
+                    event: command,
+                    value: msg.payload,
+                });
                 updateState(name, {STATS_TOTAL_COUNT: 0});
                 updateState(name, {[command]: msg.payload});
                 ws_broadcast(name, "STATE", deviceState[name]);
                 mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
                 break;
             default:
+                // db_createEvent({
+                //     nama: name,
+                //     event: command,
+                //     value: msg.payload,
+                // });
                 updateState(name, {[command]: msg.payload});
                 ws_broadcast(name, "STATE", deviceState[name]);
         }
@@ -138,6 +153,20 @@ function ws_handleIncoming(client, command, value) {
             }));
             break;
     }
+}
+
+
+
+function db_createEvent({
+    nama,
+    event,
+    value
+}) {
+    await eventDB.create({
+        NAMA_MESIN: nama,
+        EVENT: event,
+        VALUE: JSON.stringify(value)
+    });
 }
 
 
