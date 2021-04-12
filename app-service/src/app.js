@@ -157,17 +157,21 @@ function ws_handleIncoming(client, command, value) {
 
 
 
-function db_createEvent({
+async function db_createEvent({
     nama,
     event,
     value
 }) {
-    await eventDB.create({
-        NAMA_MESIN: nama,
-        EVENT: event,
-        VALUE: JSON.stringify(value),
-        TIMESTAMP: Date.now(),
-    });
+    try{
+        await eventDB.create({
+            NAMA_MESIN: nama,
+            EVENT: event,
+            VALUE: JSON.stringify(value),
+            TIMESTAMP: Date.now(),
+        });
+    } catch(e) { 
+        console.error(e)
+    }
 }
 
 
