@@ -22,7 +22,6 @@ export default class TitleText extends BasicComponent{
 
     setValue(val) {
         this.elem.value.innerText = val;
-        this.elem.value.style.after
     }
 
 }
