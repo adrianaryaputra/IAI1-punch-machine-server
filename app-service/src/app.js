@@ -62,6 +62,7 @@ aedes.subscribe("MP/#", (a,cb) => {
                 mq_publish(`MP/${name}/SERVER_STATE`, deviceState[name]);
                 break;
             case "SERVER_STATE":
+            case "MODBUS_ERRORS":
             // case "DRIVE_COUNTER_CV":
                 break;
             case "STATS_PUNCHING":
