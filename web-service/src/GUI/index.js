@@ -20,9 +20,11 @@ function ws_send(command, value) {
 }
       
 function ws_onOpen(evt) {
+    console.log("websocket opened...");
 }
       
 function ws_onClose(evt) {
+    console.log("websocket closed...");
     setTimeout(ws_load, 1000);
 }
 
@@ -61,6 +63,7 @@ function ws_onMessage(evt) {
 function ws_onError(evt) {
     console.log(`WS: ${evt.type}`);
     console.log(evt.data);
+    websocket.close();
 }
 
 const devices = {};
