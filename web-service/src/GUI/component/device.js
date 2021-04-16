@@ -29,9 +29,6 @@ export default class Device extends BasicComponent{
         this.noInput = this.onNoInputTimeout(5000);
         for (const key in state) {
             switch(key) {
-                // case "DRIVE_COUNTER_CV":
-                //     this.counter.setValue(state[key]);
-                //     break;
                 case "DRIVE_SPEED":
                     this.speed.setValue(state[key]);
                     break;
@@ -68,12 +65,11 @@ export default class Device extends BasicComponent{
 
         this.deviceName     = new TitleText(this.name, { parent: this.headerHolder.element() });
         this.deviceStatus   = new Indicator({ valueON: "ON", valueOFF: "OFF" }, { parent: this.headerHolder.element() });
-        this.client         = new LabelText("Pelanggan", "###", { parent:this.element() });
-        this.tebal          = new LabelText("Tebal", "###", { parent:this.element() });
-        this.diameter       = new LabelText("Diameter", "###", { parent:this.element() });
+        this.client         = new LabelText("Customer", "###", { parent:this.element() });
+        this.tebal          = new LabelText("Thickness", "###", { parent:this.element() });
+        this.diameter       = new LabelText("Dimension", "###", { parent:this.element() });
         this.speed          = new LabelText("Speed", "###", { parent:this.element() });
-        // this.counter        = new LabelText("Counter", "", { parent:this.element() });
-        this.countersum     = new LabelText("Total Count", "###", { parent:this.element() });
+        this.countersum     = new LabelText("Counts", "###", { parent:this.element() });
     }
 
 }

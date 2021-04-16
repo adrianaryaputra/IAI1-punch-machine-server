@@ -14,7 +14,7 @@ export default class LabelText extends BasicComponent{
         this.stylize(this.element(), {
             display: "grid",
             gap: ".5em",
-            gridTemplateColumns: "minmax(150px,0.3fr) minmax(250px,1fr)",
+            gridTemplateColumns: "minmax(200px,.5fr) minmax(250px,1fr)",
             gridAutoFlow: "row",
             // backgroundColor: "#000",
             borderRadius: ".3em",
@@ -26,7 +26,7 @@ export default class LabelText extends BasicComponent{
         this.element().appendChild(this.elem.label);
         this.setLabel(this.label);
         this.stylize(this.elem.label, {
-            padding: ".3em .5em",
+            padding: ".1em .3em",
         });
 
         this.elem.value = document.createElement("h3");
@@ -34,7 +34,7 @@ export default class LabelText extends BasicComponent{
         this.setValue(this.value)
         this.stylize(this.elem.value, {
             backgroundColor: "var(--color-background)",
-            padding: ".3em .5em",
+            padding: ".1em .3em",
             borderRadius: "inherit",
         });
     }

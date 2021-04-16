@@ -72,7 +72,7 @@ const deviceHolder = new BasicComponent({
     style: {
         display: "grid",
         margin: "1em",
-        gridTemplateColumns: "repeat(auto-fit, minmax(450px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
         gridAutoFlow: "row",
         gap: "1em"
     }
