@@ -38,7 +38,7 @@ function ws_onMessage(evt) {
     console.log(parsedEvt);
     switch(parsedEvt.command){
         case "SERVER_STATE":
-            for (const deviceName in parsedEvt.payload) {
+            for (const deviceName of Object.keys(parsedEvt.payload).sort()) {
                 console.log("creating", deviceName);
                 devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {
                     parent: deviceHolder.element(),
