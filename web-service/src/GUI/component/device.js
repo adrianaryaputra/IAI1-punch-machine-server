@@ -12,7 +12,8 @@ export default class Device extends BasicComponent{
         this.stylize(this.element(), {
             display: "grid",
             gap: ".3em",
-            backgroundColor: "rgba(0,255,0,0.2)"
+            backgroundColor: "rgba(0,255,0,0.2)",
+            fontSize: "1.2rem",
         });
         this.noInput = this.onNoInputTimeout(5000);
     }
