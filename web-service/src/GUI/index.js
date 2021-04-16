@@ -25,7 +25,7 @@ function ws_onOpen(evt) {
       
 function ws_onClose(evt) {
     console.log("websocket closed...");
-    setTimeout(ws_load, 1000);
+    setTimeout(() => location.reload(), 1000);
 }
 
 let deviceStyle = {
@@ -63,7 +63,6 @@ function ws_onMessage(evt) {
 function ws_onError(evt) {
     console.log(`WS: ${evt.type}`);
     console.log(evt.data);
-    websocket.close();
 }
 
 const devices = {};
