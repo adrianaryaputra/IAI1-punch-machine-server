@@ -73,6 +73,7 @@ aedes.subscribe("MP/#", (a,cb) => {
                 });
                 updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
                 ws_broadcast(name, "STATE", deviceState[name]);
+                mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
                 break;
             case "STATS_NAMA_PELANGGAN":
             case "STATS_UKURAN_BAHAN":
