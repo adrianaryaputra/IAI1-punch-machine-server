@@ -39,7 +39,7 @@ function ws_onMessage(evt) {
             incomingMsg(parsedEvt.payload[par.get("name")]);
             break;
         case "STATE":
-            incomingMsg(parsedEvt.payload);
+            if(parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
             break;
     }
 }
