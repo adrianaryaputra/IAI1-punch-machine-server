@@ -145,10 +145,10 @@ function ponpmin_calc(name, cnt=10) {
     // calculate punch per minute
     let ttl = deviceState[name]["PONPMIN_TIMETBL"].length 
     if(ttl > 1) {
-        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 60000/((
+        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = (60000/((
             deviceState[name]["PONPMIN_TIMETBL"][ttl-1] 
             - deviceState[name]["PONPMIN_TIMETBL"][0]
-        ) / ttl).toFixed(2);
+        ) / ttl)).toFixed(2);
     }
 
     // reset punch per minute if no punch after 20s
