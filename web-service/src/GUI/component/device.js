@@ -72,8 +72,8 @@ export default class Device extends BasicComponent{
         this.tebal          = new LabelText("Thickness", "###", { parent:this.element() });
         this.diameter       = new LabelText("Dimension", "###", { parent:this.element() });
         // this.speed          = new LabelText("Speed", "###", { parent:this.element() });
-        this.ponpmin        = new LabelText("Pon/min", "###", { parent:this.element() });
         this.countersum     = new LabelText("Counts", "###", { parent:this.element() });
+        this.ponpmin        = new LabelText("Pon/min", "###", { parent:this.element() });
     }
 
 }
