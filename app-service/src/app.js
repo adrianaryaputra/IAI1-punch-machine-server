@@ -155,6 +155,7 @@ function ponpmin_calc(name, cnt=10) {
     ponpmin_tout[name] = setTimeout(() => {
         deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
         deviceState[name]["PONPMIN_TIMETBL"] = [];
+        ws_broadcast(name, "STATE", deviceState[name]);
     }, 20000);
 }
 
