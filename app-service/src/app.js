@@ -72,7 +72,7 @@ aedes.subscribe("MP/#", (a,cb) => {
                     value: msg.payload,
                 });
                 updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
-                ponpmin_calc(name);
+                // ponpmin_calc(name);
                 ws_broadcast(name, "STATE", deviceState[name]);
                 mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
                 break;
@@ -124,7 +124,7 @@ function ponpmin_calc(name, cnt=10) {
         deviceState[name]["PONPMIN_TIMETBL"] = [];
     if(deviceState[name]["STATS_PUNCH_PER_MINUTE"] === undefined)
         deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
-        
+
     // clearing timeout after 20 second
     if(deviceState[name]["PONPMIN_RST"])
         clearTimeout(deviceState[name]["PONPMIN_RST"]);
