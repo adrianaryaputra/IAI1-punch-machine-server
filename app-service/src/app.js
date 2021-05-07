@@ -72,6 +72,7 @@ aedes.subscribe("MP/#", (a,cb) => {
                     value: msg.payload,
                 });
                 updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
+                ponpmin_calc(name);
                 ws_broadcast(name, "STATE", deviceState[name]);
                 mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
                 break;
@@ -114,6 +115,37 @@ wss.on('connection', (ws) => {
         ws_handleIncoming(ws, parsedMsg.command, parsedMsg.value);
     });
 });
+
+
+
+function ponpmin_calc(name, cnt=10) {
+    // handle first try
+    if(deviceState[name]["PONPMIN_TIMETBL"] === undefined) 
+        deviceState[name]["PONPMIN_TIMETBL"] = [];
+
+    // clearing timeout after 20 second
+    if(deviceState[name]["PONPMIN_RST"])
+        clearTimeout(deviceState[name]["PONPMIN_RST"]);
+
+    // handle time table
+    deviceState[name]["PONPMIN_TIMETBL"].push(Date.now());
+    deviceState[name]["PONPMIN_TIMETBL"].slice(0,cnt);
+
+    // calculate punch per minute
+    let ttl = deviceState[name]["PONPMIN_TIMETBL"].length 
+    if(ttl > 1) {
+        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = ((
+            deviceState[name]["PONPMIN_TIMETBL"][ttl-1] 
+            - deviceState[name]["PONPMIN_TIMETBL"][0]
+        ) / ttl).toFixed(2);
+    }
+
+    // reset punch per minute if no punch after 20s
+    deviceState[name]["PONPMIN_RST"] = setTimeout(() => {
+        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
+        deviceState[name]["PONPMIN_TIMETBL"] = [];
+    }, 20000);
+}
 
 
 

@@ -29,8 +29,11 @@ export default class Device extends BasicComponent{
         this.noInput = this.onNoInputTimeout(5000);
         for (const key in state) {
             switch(key) {
-                case "DRIVE_SPEED":
-                    this.speed.setValue(state[key]);
+                // case "DRIVE_SPEED":
+                //     this.speed.setValue(state[key]);
+                //     break;
+                case "STATS_PUNCH_PER_MINUTE":
+                    this.ponpmin.setValue(state[key]);
                     break;
                 case "DEVICE_STATUS":
                     this.deviceStatus.toggle(state[key]);
@@ -68,7 +71,8 @@ export default class Device extends BasicComponent{
         this.client         = new LabelText("Customer", "###", { parent:this.element() });
         this.tebal          = new LabelText("Thickness", "###", { parent:this.element() });
         this.diameter       = new LabelText("Dimension", "###", { parent:this.element() });
-        this.speed          = new LabelText("Speed", "###", { parent:this.element() });
+        // this.speed          = new LabelText("Speed", "###", { parent:this.element() });
+        this.ponpmin        = new LabelText("Pon/min", "###", { parent:this.element() });
         this.countersum     = new LabelText("Counts", "###", { parent:this.element() });
     }
 
