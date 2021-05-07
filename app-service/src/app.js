@@ -138,7 +138,7 @@ function ponpmin_calc(name, cnt=10) {
 
     // handle time table
     deviceState[name]["PONPMIN_TIMETBL"].push(Date.now());
-    deviceState[name]["PONPMIN_TIMETBL"].slice(0,cnt);
+    deviceState[name]["PONPMIN_TIMETBL"] = deviceState[name]["PONPMIN_TIMETBL"].slice(0,cnt);
 
     console.log("ponpmin calc");
 
