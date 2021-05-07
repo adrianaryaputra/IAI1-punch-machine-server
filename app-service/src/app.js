@@ -39,12 +39,14 @@ const wss = new WebSocket.Server({ port: process.env.WS_PORT });
 
 // mq sub -> ws pub
 aedes.on("clientReady", c => {
+    console.log("ready",c);
     deviceState[c.id] = deviceState[c.id] || {};
     deviceState[c.id]["DEVICE_STATUS"] = true;
     ws_broadcast(c.id, "STATE", deviceState[c.id]);
     mq_publish(`MP/${c.id}/SERVER_STATE`, deviceState[c.id]);
 });
 aedes.on("clientDisconnect", c => {
+    console.log("dc",c);
     deviceState[c.id] = deviceState[c.id] || {};
     deviceState[c.id]["DEVICE_STATUS"] = false;
     ws_broadcast(c.id, "STATE", deviceState[c.id]);
@@ -72,7 +74,7 @@ aedes.subscribe("MP/#", (a,cb) => {
                     value: msg.payload,
                 });
                 updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
-                // ponpmin_calc(name);
+                ponpmin_calc(name);
                 ws_broadcast(name, "STATE", deviceState[name]);
                 mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
                 break;
