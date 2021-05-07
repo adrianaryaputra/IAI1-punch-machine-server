@@ -3,6 +3,7 @@ import TitleText from './component/title-text.js';
 import Indicator from './component/indicator.js';
 import Button from './component/button.js';
 import BasicComponent from './component/basic-component.js';
+import ChartComponent from './component/chart.js';
 
 var wsUri = `ws://${location.hostname}:${+location.port+1}`;
 var websocket = new WebSocket(wsUri);
@@ -127,7 +128,7 @@ const deviceLabelHolder = new BasicComponent({
         fontSize: "1.5em",
         margin: "1em 0",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(600px, 1fr))",
         gridAutoFlow: "row",
         gap: "1em 2em"
     }
@@ -139,6 +140,67 @@ const deviceDiameter       = new LabelText("Dimension", "###", { parent:deviceLa
 const deviceSpeed          = new LabelText("Speed", "###", { parent:deviceLabelHolder.element() });
 const deviceCountersum     = new LabelText("Counts", "###", { parent:deviceLabelHolder.element() });
 const devicePonpmin        = new LabelText("Pon/min", "###", { parent:deviceLabelHolder.element() });
+
+const datapoints = [0, 0, 0, 0, 0, 0, 0, 22.7, 22.7, 22.9, 22.7, 23, 22.7, 0, 22.4, 22.3, 22.7, 22.5, 22.5, 0, 0, 0, 0, 0];
+const labels = [];
+for (let i = 0; i < datapoints.length; ++i) {
+  labels.push(i.toString().padStart(2,'0')+":00");
+}
+const chartData = {
+    labels: labels,
+    datasets: [{
+        label: 'Kecepatan Pon (pon/min)',
+        data: datapoints,
+        borderColor: "cyan",
+        fill: false,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4
+    }]
+};
+
+const chartConfig = {
+  type: 'line',
+  data: chartData,
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      title: {
+        display: false,
+        text: 'Kecepatan Pon'
+      },
+    },
+    interaction: {
+      intersect: false,
+    },
+    scales: {
+      x: {
+        display: true,
+        title: {
+          display: true
+        }
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: ''
+        },
+        suggestedMin: 0,
+        suggestedMax: 40
+      }
+    }
+  },
+};
+
+const testChart = new ChartComponent(chartConfig, {
+    height: "400px"
+},{
+    parent: deviceHolder.element(),
+    style: {
+        margin: "2em 1em 1em 1em",
+    }
+})
 
 
 // JS EXEC
