@@ -4,16 +4,23 @@ import TitleText from './title-text.js';
 import Indicator from './indicator.js';
 export default class Device extends BasicComponent{
 
-    constructor(name, state = {}, options) {
+    constructor({
+        name,
+        state = {},
+        listener = {},
+    }, options) {
         super(options);
         this.name = name;
+        this.listener = listener;
         this.draw();
+        this.execListener();
         this.update(state);
         this.stylize(this.element(), {
             display: "grid",
             gap: ".3em",
             backgroundColor: "rgba(0,255,0,0.2)",
             fontSize: "1.2rem",
+            cursor: "pointer",
         });
         this.noInput = this.onNoInputTimeout(5000);
     }
@@ -62,7 +69,7 @@ export default class Device extends BasicComponent{
                 fontSize: "1.5rem",
                 margin: "0 0 var(--normal) .3em",
                 display: "grid",
-                gridTemplateColumns: "minmax(max-content, 1fr) 100px"
+                gridTemplateColumns: "minmax(max-content, 1fr) 100px",
             }
         });
 
@@ -74,6 +81,12 @@ export default class Device extends BasicComponent{
         // this.speed          = new LabelText("Speed", "###", { parent:this.element() });
         this.countersum     = new LabelText("Counts", "###", { parent:this.element() });
         this.ponpmin        = new LabelText("Pon/min", "###", { parent:this.element() });
+    }
+
+    execListener() {
+        for (const key in this.listener) {
+            this.element().addEventListener(key, this.listener[key]);
+        }
     }
 
 }

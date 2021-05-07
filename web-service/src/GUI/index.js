@@ -40,7 +40,13 @@ function ws_onMessage(evt) {
         case "SERVER_STATE":
             for (const deviceName of Object.keys(parsedEvt.payload).sort()) {
                 console.log("creating", deviceName);
-                devices[deviceName] = new Device(deviceName, parsedEvt.payload[deviceName], {
+                devices[deviceName] = new Device({
+                    name: deviceName, 
+                    state: parsedEvt.payload[deviceName],
+                    listener: {
+                        click: () => location.href = `/ondevice.html?name=${deviceName}`,
+                    }
+                }, {
                     parent: deviceHolder.element(),
                     style: deviceStyle,
                 });
@@ -50,7 +56,16 @@ function ws_onMessage(evt) {
             if(devices[parsedEvt.device]) {
                 devices[parsedEvt.device].update(parsedEvt.payload);
             } else {
-                devices[parsedEvt.device] = new Device(parsedEvt.device, parsedEvt.payload, {
+                devices[parsedEvt.device] = devices[deviceName] = new Device({
+                    name: deviceName, 
+                    state: parsedEvt.payload[deviceName],
+                    listener: {
+                        click: () => {
+                            location.href = "/ondevice",
+                            location.search = `?name=${deviceName}`
+                        }
+                    }
+                }, {
                     parent: deviceHolder.element(),
                     style: deviceStyle,
                 });
