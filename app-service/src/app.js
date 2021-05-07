@@ -122,7 +122,9 @@ function ponpmin_calc(name, cnt=10) {
     // handle first try
     if(deviceState[name]["PONPMIN_TIMETBL"] === undefined) 
         deviceState[name]["PONPMIN_TIMETBL"] = [];
-
+    if(deviceState[name]["STATS_PUNCH_PER_MINUTE"] === undefined)
+        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
+        
     // clearing timeout after 20 second
     if(deviceState[name]["PONPMIN_RST"])
         clearTimeout(deviceState[name]["PONPMIN_RST"]);
