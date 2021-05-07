@@ -119,7 +119,7 @@ wss.on('connection', (ws) => {
 });
 
 
-
+ponpmin_tout = {};
 function ponpmin_calc(name, cnt=10) {
 
     console.log("ponpmin on", name);
@@ -130,9 +130,9 @@ function ponpmin_calc(name, cnt=10) {
     if(deviceState[name]["STATS_PUNCH_PER_MINUTE"] === undefined)
         deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
 
-    // // clearing timeout after 20 second
-    // if(deviceState[name]["PONPMIN_RST"])
-    //     clearTimeout(deviceState[name]["PONPMIN_RST"]);
+    // clearing timeout after 20 second
+    if(ponpmin_tout[name])
+        clearTimeout(ponpmin_tout[name]);
 
     console.log("ponpmin handle timetable");
 
@@ -145,17 +145,17 @@ function ponpmin_calc(name, cnt=10) {
     // calculate punch per minute
     let ttl = deviceState[name]["PONPMIN_TIMETBL"].length 
     if(ttl > 1) {
-        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = ((
+        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 1000/((
             deviceState[name]["PONPMIN_TIMETBL"][ttl-1] 
             - deviceState[name]["PONPMIN_TIMETBL"][0]
         ) / ttl).toFixed(2);
     }
 
     // reset punch per minute if no punch after 20s
-    // deviceState[name]["PONPMIN_RST"] = setTimeout(() => {
-    //     deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
-    //     deviceState[name]["PONPMIN_TIMETBL"] = [];
-    // }, 20000);
+    ponpmin_tout[name] = setTimeout(() => {
+        deviceState[name]["STATS_PUNCH_PER_MINUTE"] = 0;
+        deviceState[name]["PONPMIN_TIMETBL"] = [];
+    }, 20000);
 }
 
 
