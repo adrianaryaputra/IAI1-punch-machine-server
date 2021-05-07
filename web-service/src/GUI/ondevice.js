@@ -119,7 +119,7 @@ const deviceHeaderHolder = new BasicComponent({
 });
 
 const deviceTitle = new TitleText(par.get("name"), { parent: deviceHeaderHolder.element() });
-const deviceStatus = new Indicator({ valueON: "ON", valueOFF: "OFF" }, { parent: deviceHeaderHolder.element() });
+const deviceStatus = new Indicator({ valueON: "Online", valueOFF: "Offline" }, { parent: deviceHeaderHolder.element() });
 
 const deviceLabelHolder = new BasicComponent({
     parent: deviceHolder.element(),
