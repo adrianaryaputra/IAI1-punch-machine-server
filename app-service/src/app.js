@@ -72,7 +72,7 @@ aedes.subscribe("MP/#", (a,cb) => {
                     value: msg.payload,
                 });
                 updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
-                ponpmin_calc(name);
+                // ponpmin_calc(name);
                 ws_broadcast(name, "STATE", deviceState[name]);
                 mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
                 break;
