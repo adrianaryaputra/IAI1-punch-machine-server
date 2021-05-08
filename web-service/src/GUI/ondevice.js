@@ -121,9 +121,9 @@ function createPonpminChart(labels, datapoints) {
             scales: {
                 x: {
                     type: "time",
-                    time: {
-                        tooltipFormat: 'DD T'
-                    },
+                    // time: {
+                    //     tooltipFormat: 'DD T'
+                    // },
                     title: {
                         display: true
                     }
