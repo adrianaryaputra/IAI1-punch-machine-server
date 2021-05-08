@@ -220,7 +220,10 @@ async function ws_handleIncoming(client, command, value) {
                         }
                     }
                 ]);
-                console.log(hourBound)
+                result.map(v => {
+                    v._id = new Date(v._id).getHours();
+                    return v;
+                })
                 client.send(JSON.stringify({
                     command,
                     payload: result
