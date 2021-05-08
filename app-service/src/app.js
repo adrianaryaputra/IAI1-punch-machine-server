@@ -202,7 +202,7 @@ async function ws_handleIncoming(client, command, value) {
             yesterday = (new Date(Date.now() - 864e5)).setMinutes(0,0,0);
             current = new Date().setMinutes(0,0,0);
             hourBound = [];
-            for (let index = yesterday; index <= current; index+=36e5) {
+            for (let index = yesterday; index <= current; index+=6e4) {
                 hourBound.push(new Date(index));
             }
             try{
