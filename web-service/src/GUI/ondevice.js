@@ -159,7 +159,7 @@ function createPonpminChart(labels, datapoints) {
         },
     };
     
-    const testChart = new ChartComponent(chartConfig, {
+    return new ChartComponent(chartConfig, {
         height: "400px"
     }, {
         parent: deviceHolder.element(),
@@ -295,7 +295,7 @@ const deviceLabelHolder = new BasicComponent({
     }
 });
 
-createPonpminChart([],[]);
+const ponpminChart = createPonpminChart([],[]);
 
 const deviceClient = new LabelText("Customer", "###", {
     parent: deviceLabelHolder.element()
