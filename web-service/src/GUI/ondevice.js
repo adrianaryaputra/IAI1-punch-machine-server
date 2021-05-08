@@ -146,7 +146,7 @@ function createPonpminChart(labels, datapoints) {
                         text: ''
                     },
                     suggestedMin: 0,
-                    suggestedMax: 40
+                    suggestedMax: 20
                 }
             }
         },
