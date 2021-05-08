@@ -23,13 +23,16 @@ function ws_send(command, value) {
     }))
 }
 
+let chartUpdateInterval;
 function ws_onOpen(evt) {
     console.log("websocket opened...");
     ws_send("GET_PONPMIN_24H", par.get("name"));
+    chartUpdateInterval = setInterval(() => ws_send("GET_PONPMIN_24H", par.get("name")), 60000);
 }
 
 function ws_onClose(evt) {
     console.log("websocket closed...");
+    clearInterval(chartUpdateInterval);
     setTimeout(() => location.reload(), 1000);
 }
 
@@ -69,9 +72,6 @@ function ws_onMessage(evt) {
                 setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), [
                     Object.values(datapoints).map(v => v.ponpmin)
                 ]);
-
-                // createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
-                // createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
             }
     }
 }
