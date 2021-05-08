@@ -141,7 +141,7 @@ function createPonpminChart(labels, datapoints) {
                     type: "time",
                     time: {
                         unit: "hour",
-                        tooltipFormat: 'DD/MM/YYYY HH:00'
+                        tooltipFormat: 'DD/MM/YYYY HH:mm'
                     },
                     title: {
                         display: true
