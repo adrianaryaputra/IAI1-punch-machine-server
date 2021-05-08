@@ -110,10 +110,11 @@ function ws_onError(evt) {
 }
 
 function setChart(chart, labels, datapoints) {
-    console.log("CHART CHART LABEL", chart.chart.data.labels);
-    console.log("LABELS", labels);
-    console.log("CHART CHART DATA", chart.chart.data.datasets[0].data);
-    console.log("DATASET", datapoints);
+    // console.log("CHART CHART LABEL", chart.chart.data.labels);
+    // console.log("LABELS", labels);
+    // console.log("CHART CHART DATA", chart.chart.data.datasets[0].data);
+    // console.log("DATASET", datapoints);
+    console.log("updating chart...");
     chart.chart.data.labels = labels;
     datapoints.forEach((data, dataidx) => {
         chart.chart.data.datasets[dataidx].data = data;
