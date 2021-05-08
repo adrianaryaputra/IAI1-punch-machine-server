@@ -52,7 +52,7 @@ function ws_onMessage(evt) {
                         ponpmin: (v.count / 60).toFixed(2)
                     }
                 });
-                console.log("ponpmin", ponpmin);
+                // console.log("ponpmin", ponpmin);
                 let datapoints = {};
                 for (
                     let index = parsedEvt.payload.startHour; 
@@ -60,10 +60,14 @@ function ws_onMessage(evt) {
                     index+=36e5
                 ) { datapoints[new Date(index).toISOString()] = 0 }
                 ponpmin.forEach((data) => {
-                    datapoints[data.jam] = data.ponpmin;
+                    datapoints[data.jam] = {
+                        ponpmin: data.ponpmin,
+                        jumlah: data.jumlah
+                    };
                 });
                 console.log("datapoints", datapoints);
-                createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints));
+                createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
+                createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
             }
     }
 }
@@ -153,7 +157,69 @@ function createPonpminChart(labels, datapoints) {
     };
     
     const testChart = new ChartComponent(chartConfig, {
-        height: "400px"
+        height: "200px"
+    }, {
+        parent: deviceHolder.element(),
+        style: {
+            margin: "2em 1em 1em 1em",
+        }
+    });
+}
+
+
+function createProductionChart(labels, datapoints) {
+    const chartData = {
+        labels: labels,
+        datasets: [{
+            label: 'Jumlah Produksi',
+            data: datapoints,
+            borderColor: "cyan",
+            fill: true,
+            // cubicInterpolationMode: 'monotone',
+            // tension: 0.4
+        }]
+    };
+    
+    const chartConfig = {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: false,
+                    text: 'Jumlah Pon'
+                },
+            },
+            interaction: {
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    type: "time",
+                    time: {
+                        unit: "hour",
+                        tooltipFormat: 'DD/MM/YYYY HH:00'
+                    },
+                    title: {
+                        display: true
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: ''
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 1000
+                }
+            }
+        },
+    };
+    
+    const testChart = new ChartComponent(chartConfig, {
+        height: "200px"
     }, {
         parent: deviceHolder.element(),
         style: {
