@@ -10,10 +10,10 @@ var websocket = new WebSocket(wsUri);
 
 function ws_load() {
     console.log("opening websocket ...");
-    websocket.onopen    = ws_onOpen;
-    websocket.onclose   = ws_onClose;
+    websocket.onopen = ws_onOpen;
+    websocket.onclose = ws_onClose;
     websocket.onmessage = ws_onMessage;
-    websocket.onerror   = ws_onError;
+    websocket.onerror = ws_onError;
 }
 
 function ws_send(command, value) {
@@ -22,42 +22,44 @@ function ws_send(command, value) {
         value
     }))
 }
-      
+
 function ws_onOpen(evt) {
     console.log("websocket opened...");
     ws_send("GET_PONPMIN_24H", par.get("name"));
 }
-      
+
 function ws_onClose(evt) {
     console.log("websocket closed...");
     setTimeout(() => location.reload(), 1000);
 }
-      
+
 function ws_onMessage(evt) {
     let parsedEvt = JSON.parse(evt.data);
     console.log(parsedEvt);
-    switch(parsedEvt.command){
+    switch (parsedEvt.command) {
         case "SERVER_STATE":
             incomingMsg(parsedEvt.payload[par.get("name")]);
             break;
         case "STATE":
-            if(parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
+            if (parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
             break;
         case "GET_PONPMIN_24H":
             let ponpmin = parsedEvt.payload.map(v => {
                 return {
                     jam: new Date(v._id),
                     jumlah: v.count,
-                    ponpmin: (v.count/60).toFixed(2)
+                    ponpmin: (v.count / 60).toFixed(2)
                 }
             });
-            console.log(ponpmin);
+            let labeljam = ponpmin.map(v => v.jam);
+            let datapoints = ponpmin.map(v => v.ponpmin);
+            createPonpminChart(labeljam, datapoints);
     }
 }
 
 function incomingMsg(msg) {
     for (const key in msg) {
-        switch(key) {
+        switch (key) {
             case "DRIVE_SPEED":
                 deviceSpeed.setValue(msg[key]);
                 break;
@@ -82,10 +84,70 @@ function incomingMsg(msg) {
         };
     };
 }
-      
+
 function ws_onError(evt) {
     console.log(`WS: ${evt.type}`);
     console.log(evt.data);
+}
+
+function createPonpminChart(labels, datapoints) {
+    const chartData = {
+        labels: labels,
+        datasets: [{
+            label: 'Kecepatan Pon (pon/min)',
+            data: datapoints,
+            borderColor: "cyan",
+            fill: false,
+            cubicInterpolationMode: 'monotone',
+            tension: 0.4
+        }]
+    };
+    
+    const chartConfig = {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: false,
+                    text: 'Kecepatan Pon'
+                },
+            },
+            interaction: {
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    type: "time",
+                    time: {
+                        tooltipFormat: 'DD T'
+                    },
+                    title: {
+                        display: true
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: ''
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 40
+                }
+            }
+        },
+    };
+    
+    const testChart = new ChartComponent(chartConfig, {
+        height: "400px"
+    }, {
+        parent: deviceHolder.element(),
+        style: {
+            margin: "2em 1em 1em 1em",
+        }
+    });
 }
 
 
@@ -129,8 +191,15 @@ const deviceHeaderHolder = new BasicComponent({
     }
 });
 
-const deviceTitle = new TitleText(par.get("name"), { parent: deviceHeaderHolder.element() });
-const deviceStatus = new Indicator({ valueON: "Online", valueOFF: "Offline" }, { parent: deviceHeaderHolder.element() });
+const deviceTitle = new TitleText(par.get("name"), {
+    parent: deviceHeaderHolder.element()
+});
+const deviceStatus = new Indicator({
+    valueON: "Online",
+    valueOFF: "Offline"
+}, {
+    parent: deviceHeaderHolder.element()
+});
 
 const deviceLabelHolder = new BasicComponent({
     parent: deviceHolder.element(),
@@ -144,73 +213,24 @@ const deviceLabelHolder = new BasicComponent({
     }
 });
 
-const deviceClient         = new LabelText("Customer", "###", { parent:deviceLabelHolder.element() });
-const deviceTebal          = new LabelText("Thickness", "###", { parent:deviceLabelHolder.element() });
-const deviceDiameter       = new LabelText("Dimension", "###", { parent:deviceLabelHolder.element() });
-const deviceSpeed          = new LabelText("Speed", "###", { parent:deviceLabelHolder.element() });
-const deviceCountersum     = new LabelText("Counts", "###", { parent:deviceLabelHolder.element() });
-const devicePonpmin        = new LabelText("Pon/min", "###", { parent:deviceLabelHolder.element() });
-
-const datapoints = [0, 0, 0, 0, 0, 0, 0, 22.7, 22.7, 22.9, 22.7, 23, 22.7, 0, 22.4, 22.3, 22.7, 22.5, 22.5, 0, 0, 0, 0, 0];
-const labels = [];
-for (let i = 0; i < datapoints.length; ++i) {
-  labels.push(i.toString().padStart(2,'0')+":00");
-}
-const chartData = {
-    labels: labels,
-    datasets: [{
-        label: 'Kecepatan Pon (pon/min)',
-        data: datapoints,
-        borderColor: "cyan",
-        fill: false,
-        cubicInterpolationMode: 'monotone',
-        tension: 0.4
-    }]
-};
-
-const chartConfig = {
-  type: 'line',
-  data: chartData,
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: false,
-        text: 'Kecepatan Pon'
-      },
-    },
-    interaction: {
-      intersect: false,
-    },
-    scales: {
-      x: {
-        display: true,
-        title: {
-          display: true
-        }
-      },
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: ''
-        },
-        suggestedMin: 0,
-        suggestedMax: 40
-      }
-    }
-  },
-};
-
-const testChart = new ChartComponent(chartConfig, {
-    height: "400px"
-},{
-    parent: deviceHolder.element(),
-    style: {
-        margin: "2em 1em 1em 1em",
-    }
-})
+const deviceClient = new LabelText("Customer", "###", {
+    parent: deviceLabelHolder.element()
+});
+const deviceTebal = new LabelText("Thickness", "###", {
+    parent: deviceLabelHolder.element()
+});
+const deviceDiameter = new LabelText("Dimension", "###", {
+    parent: deviceLabelHolder.element()
+});
+const deviceSpeed = new LabelText("Speed", "###", {
+    parent: deviceLabelHolder.element()
+});
+const deviceCountersum = new LabelText("Counts", "###", {
+    parent: deviceLabelHolder.element()
+});
+const devicePonpmin = new LabelText("Pon/min", "###", {
+    parent: deviceLabelHolder.element()
+});
 
 
 // JS EXEC
