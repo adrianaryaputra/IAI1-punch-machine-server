@@ -200,8 +200,9 @@ async function ws_handleIncoming(client, command, value) {
             break;
         case "GET_PONPMIN_24H":
             yesterday = (new Date(Date.now() - 864e5)).setMinutes(0,0,0);
+            current = new Date().setMinutes(0,0,0);
             hourBound = [];
-            for (let index = yesterday; index <= (new Date().setMinutes(0,0,0)); index+=36e5) {
+            for (let index = yesterday; index <= current; index+=36e5) {
                 hourBound.push(new Date(index));
             }
             try{
@@ -211,6 +212,7 @@ async function ws_handleIncoming(client, command, value) {
                             EVENT: "STATS_PUNCHING",
                             NAMA_MESIN: value,
                             TIMESTAMP: {$gte: new Date(yesterday)},
+                            TIMESTAMP: {$lte: new Date(current)},
                         }
                     }, {
                         $bucket: {

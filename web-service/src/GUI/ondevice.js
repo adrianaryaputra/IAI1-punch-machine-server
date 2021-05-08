@@ -46,7 +46,7 @@ function ws_onMessage(evt) {
         case "GET_PONPMIN_24H":
             let ponpmin = parsedEvt.payload.map(v => {
                 return {
-                    jam: new Date(v._id).getHours(),
+                    jam: new Date(v._id),
                     jumlah: v.count,
                     ponpmin: (v.count/60).toFixed(2)
                 }
