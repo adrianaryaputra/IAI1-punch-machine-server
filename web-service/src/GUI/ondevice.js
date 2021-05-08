@@ -58,7 +58,7 @@ function ws_onMessage(evt) {
                     let index = parsedEvt.payload.startHour; 
                     index <= parsedEvt.payload.finishHour; 
                     index+=36e5
-                ) { datapoints[new Date(index).toISOString()] = 0 }
+                ) { datapoints[new Date(index).toISOString()] = {ponpmin: 0, jumlah: 0} }
                 ponpmin.forEach((data) => {
                     datapoints[data.jam] = {
                         ponpmin: data.ponpmin,
