@@ -1,4 +1,6 @@
 import '../dep/chart.js';
+import '../dep/moment.js';
+import '../dep/chartjs-adapter-moment.js';
 import BasicComponent from './basic-component.js';
 export default class ChartComponent extends BasicComponent{
 
