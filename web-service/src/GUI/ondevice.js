@@ -25,6 +25,7 @@ function ws_send(command, value) {
       
 function ws_onOpen(evt) {
     console.log("websocket opened...");
+    ws_send("GET_PONPMIN_24H", par.get("name"));
 }
       
 function ws_onClose(evt) {

@@ -68,16 +68,18 @@ aedes.subscribe("MP/#", (a,cb) => {
             // case "DRIVE_COUNTER_CV":
                 break;
             case "STATS_PUNCHING":
-                db_createEvent({
-                    nama: name,
-                    event: command,
-                    value: msg.payload,
-                });
-                if(msg.payload > 0)
+                // do only on positive punch value [bugfix: decreasing punch total on drive reset]
+                if(msg.payload > 0) {
+                    db_createEvent({
+                        nama: name,
+                        event: command,
+                        value: msg.payload,
+                    });
                     updateState(name, {STATS_TOTAL_COUNT: deviceState[name].STATS_TOTAL_COUNT + msg.payload || msg.payload});
-                ponpmin_calc(name);
-                ws_broadcast(name, "STATE", deviceState[name]);
-                mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
+                    ponpmin_calc(name);
+                    ws_broadcast(name, "STATE", deviceState[name]);
+                    mq_publish(`MP/${name}/STATS_COUNTER`, deviceState[name].STATS_TOTAL_COUNT);
+                }
                 break;
             case "STATS_NAMA_PELANGGAN":
             case "STATS_UKURAN_BAHAN":
@@ -188,13 +190,47 @@ function mq_publish(topic, payload) {
 
 
 
-function ws_handleIncoming(client, command, value) {
+async function ws_handleIncoming(client, command, value) {
     switch(command) {
         case "GET_STATE":
             client.send(JSON.stringify({
                 command,
                 payload: deviceState
             }));
+            break;
+        case "GET_PONPMIN_24H":
+            yesterday = (new Date(Date.now() - 864e5)).setMinutes(0,0,0);
+            hourBound = [];
+            for (let index = yesterday; index < new Date().setMinutes(0,0,0); index+=36e5) {
+                hourBound.push(new Date(index));
+            }
+            try{
+                let result = await eventDB.aggregate([
+                    {
+                        $match: {
+                            EVENT: "STATS_PUNCHING",
+                            NAMA_MESIN: value,
+                            TIMESTAMP: {$gte: new Date(yesterday)},
+                        }
+                    }, {
+                        $bucket: {
+                            groupBy: "$TIMESTAMP",
+                            boundaries: hourBound,
+                            default: "other",
+                        }
+                    }
+                ]);
+                console.log(hourBound)
+                client.send(JSON.stringify({
+                    command,
+                    payload: result
+                }))
+            } catch(e) {
+                client.send(JSON.stringify({
+                    command: "ERROR",
+                    payload: e
+                }));
+            }
             break;
     }
 }
