@@ -66,7 +66,9 @@ function ws_onMessage(evt) {
                     };
                 });
                 console.log("datapoints", datapoints);
-                setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
+                setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), [
+                    {data: Object.values(datapoints).map(v => v.ponpmin)}
+                ]);
 
                 // createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
                 // createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
@@ -110,7 +112,7 @@ function ws_onError(evt) {
 function setChart(chart, labels, datapoints) {
     console.log("CHART CHART LABEL", chart.chart.data.labels);
     console.log("LABELS", labels);
-    console.log("CHART CHART DATA", chart.chart.data.datasets);
+    console.log("CHART CHART DATA", chart.chart.data.datasets[0].data);
     console.log("DATASET", datapoints);
     chart.chart.data.labels = labels;
     chart.chart.data.datasets = datapoints;
