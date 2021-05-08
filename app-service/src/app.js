@@ -221,7 +221,7 @@ async function ws_handleIncoming(client, command, value) {
                     }
                 ]);
                 result.map(v => {
-                    v._id = new Date(v._id).getHours();
+                    v._id = new Date(v._id);
                     return v;
                 })
                 client.send(JSON.stringify({
