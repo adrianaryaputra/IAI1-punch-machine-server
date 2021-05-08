@@ -174,6 +174,7 @@ function createProductionChart(labels, datapoints) {
             label: 'Jumlah Produksi',
             data: datapoints,
             borderColor: "cyan",
+            backgroundColor: "cyan",
             fill: true,
             // cubicInterpolationMode: 'monotone',
             // tension: 0.4
