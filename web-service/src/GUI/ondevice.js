@@ -52,6 +52,7 @@ function ws_onMessage(evt) {
                         ponpmin: (v.count / 60).toFixed(2)
                     }
                 });
+                console.log("ponpmin", ponpmin);
                 let datapoints = {};
                 for (
                     let index = parsedEvt.payload.startHour; 
