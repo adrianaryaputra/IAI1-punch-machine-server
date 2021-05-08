@@ -67,7 +67,7 @@ function ws_onMessage(evt) {
                 });
                 console.log("datapoints", datapoints);
                 setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), [
-                    {data: Object.values(datapoints).map(v => v.ponpmin)}
+                    Object.values(datapoints).map(v => v.ponpmin)
                 ]);
 
                 // createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
