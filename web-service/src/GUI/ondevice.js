@@ -62,6 +62,7 @@ function ws_onMessage(evt) {
                 ponpmin.forEach((data) => {
                     datapoints[data.jam] = data.jumlah;
                 });
+                console.log("datapoints", datapoints);
                 createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints));
             }
     }
