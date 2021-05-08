@@ -49,7 +49,7 @@ function ws_onMessage(evt) {
                     return {
                         jam: v._id,
                         jumlah: v.count,
-                        ponpmin: (v.count / 60).toFixed(2)
+                        ponpmin: (v.count / 1).toFixed(2)
                     }
                 });
                 // console.log("ponpmin", ponpmin);
@@ -67,7 +67,7 @@ function ws_onMessage(evt) {
                 });
                 console.log("datapoints", datapoints);
                 createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
-                createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
+                // createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
             }
     }
 }
@@ -157,7 +157,7 @@ function createPonpminChart(labels, datapoints) {
     };
     
     const testChart = new ChartComponent(chartConfig, {
-        height: "200px"
+        height: "400px"
     }, {
         parent: deviceHolder.element(),
         style: {
