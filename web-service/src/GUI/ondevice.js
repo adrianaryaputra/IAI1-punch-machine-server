@@ -173,8 +173,8 @@ function createProductionChart(labels, datapoints) {
         datasets: [{
             label: 'Jumlah Produksi',
             data: datapoints,
-            borderColor: "cyan",
-            backgroundColor: "cyan",
+            borderColor: "rgba(100,255,100,1)",
+            backgroundColor: "rgba(100,255,100,.8)",
             fill: true,
             // cubicInterpolationMode: 'monotone',
             // tension: 0.4
