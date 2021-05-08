@@ -211,8 +211,10 @@ async function ws_handleIncoming(client, command, value) {
                         $match: {
                             EVENT: "STATS_PUNCHING",
                             NAMA_MESIN: value,
-                            TIMESTAMP: {$gte: new Date(yesterday)},
-                            TIMESTAMP: {$lte: new Date(current)},
+                            TIMESTAMP: {
+                                $gte: new Date(yesterday),
+                                $lte: new Date(current),
+                            },
                         }
                     }, {
                         $bucket: {
