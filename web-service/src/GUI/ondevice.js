@@ -59,7 +59,7 @@ function ws_onMessage(evt) {
                     index <= parsedEvt.payload.finishHour; 
                     index+=36e5
                 ) { datapoints[index] = 0 }
-                ponpmin.foreach((data) => {
+                ponpmin.forEach((data) => {
                     datapoints[data.jam] = data.jumlah;
                 });
                 createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints));
