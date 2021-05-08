@@ -115,7 +115,9 @@ function setChart(chart, labels, datapoints) {
     console.log("CHART CHART DATA", chart.chart.data.datasets[0].data);
     console.log("DATASET", datapoints);
     chart.chart.data.labels = labels;
-    chart.chart.data.datasets = datapoints;
+    datapoints.forEach((data, dataidx) => {
+        chart.chart.data.datasets[dataidx].data = data;
+    });
     chart.chart.update();
 }
 
