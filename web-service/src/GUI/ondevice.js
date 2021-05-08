@@ -295,6 +295,8 @@ const deviceLabelHolder = new BasicComponent({
     }
 });
 
+createPonpminChart([],[]);
+
 const deviceClient = new LabelText("Customer", "###", {
     parent: deviceLabelHolder.element()
 });
