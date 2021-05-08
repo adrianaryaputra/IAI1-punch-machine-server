@@ -221,8 +221,7 @@ async function ws_handleIncoming(client, command, value) {
                             groupBy: "$TIMESTAMP",
                             boundaries: hourBound,
                             default: "other",
-                            output: { 
-                                "mesin": "$NAMA_MESIN",
+                            output: {
                                 "count": { $sum: 1 }
                             }
                         }
@@ -230,7 +229,11 @@ async function ws_handleIncoming(client, command, value) {
                 ]);
                 client.send(JSON.stringify({
                     command,
-                    payload: result
+                    payload: {
+                        startHour: yesterday,
+                        finishHour: current,
+                        bucket: result
+                    }
                 }))
             } catch(e) {
                 client.send(JSON.stringify({

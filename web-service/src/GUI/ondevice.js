@@ -44,16 +44,25 @@ function ws_onMessage(evt) {
             if (parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
             break;
         case "GET_PONPMIN_24H":
-            let ponpmin = parsedEvt.payload.map(v => {
-                return {
-                    jam: new Date(v._id),
-                    jumlah: v.count,
-                    ponpmin: (v.count / 60).toFixed(2)
-                }
-            });
-            let labeljam = ponpmin.map(v => v.jam);
-            let datapoints = ponpmin.map(v => v.ponpmin);
-            createPonpminChart(labeljam, datapoints);
+            if(Array.isArray(parsedEvt.payload.result)){
+                let ponpmin = parsedEvt.payload.result.map(v => {
+                    return {
+                        jam: v._id,
+                        jumlah: v.count,
+                        ponpmin: (v.count / 60).toFixed(2)
+                    }
+                });
+                datapoints = {};
+                for (
+                    let index = parsedEvt.payload.startHour; 
+                    index <= parsedEvt.payload.finishHour; 
+                    index+=36e5
+                ) { datapoints[index] = 0 }
+                ponpmin.foreach((data) => {
+                    datapoints[data.jam] = data.jumlah;
+                });
+                createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints));
+            }
     }
 }
 
