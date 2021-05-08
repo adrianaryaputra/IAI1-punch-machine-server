@@ -221,7 +221,7 @@ async function ws_handleIncoming(client, command, value) {
                     }
                 ]);
                 result.map(v => {
-                    v._id = new Date(v._id);
+                    v._id = new Date(v._id).toLocaleTimeString("id-ID");
                     return v;
                 })
                 client.send(JSON.stringify({
