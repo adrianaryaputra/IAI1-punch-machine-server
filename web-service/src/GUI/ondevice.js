@@ -67,7 +67,7 @@ function ws_onMessage(evt) {
                 });
                 console.log("datapoints", datapoints);
                 setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
-                
+
                 // createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
                 // createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
             }
@@ -116,9 +116,11 @@ function setChart(chart, label, datapoints) {
 function createPonpminChart() {
 
     let dp = {};
+    let yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
+    let current = new Date().setSeconds(0,0);
     for (
-        let index = parsedEvt.payload.startHour; 
-        index <= parsedEvt.payload.finishHour; 
+        let index = yesterday; 
+        index <= current; 
         index+=6e4
     ) { dp[new Date(index).toISOString()] = 0 }
 
