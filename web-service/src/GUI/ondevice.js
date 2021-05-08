@@ -44,8 +44,8 @@ function ws_onMessage(evt) {
             if (parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
             break;
         case "GET_PONPMIN_24H":
-            if(Array.isArray(parsedEvt.payload.result)){
-                let ponpmin = parsedEvt.payload.result.map(v => {
+            if(Array.isArray(parsedEvt.payload.bucket)){
+                let ponpmin = parsedEvt.payload.bucket.map(v => {
                     return {
                         jam: v._id,
                         jumlah: v.count,
