@@ -217,6 +217,7 @@ async function ws_handleIncoming(client, command, value) {
                             groupBy: "$TIMESTAMP",
                             boundaries: hourBound,
                             default: "other",
+                            output: { "count": { $sum: 1 } }
                         }
                     }
                 ]);
