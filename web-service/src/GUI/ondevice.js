@@ -107,9 +107,12 @@ function ws_onError(evt) {
     console.log(evt.data);
 }
 
-function setChart(chart, label, datapoints) {
-    console.log("CHART CHART DATA", chart.chart.data);
-    chart.chart.data.labels = label;
+function setChart(chart, labels, datapoints) {
+    console.log("CHART CHART LABEL", chart.chart.data.labels);
+    console.log("LABELS", labels);
+    console.log("CHART CHART DATA", chart.chart.data.datasets);
+    console.log("DATASET", datapoints);
+    chart.chart.data.labels = labels;
     chart.chart.data.datasets = datapoints;
     chart.chart.update();
 }
