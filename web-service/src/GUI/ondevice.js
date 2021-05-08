@@ -66,7 +66,9 @@ function ws_onMessage(evt) {
                     };
                 });
                 console.log("datapoints", datapoints);
-                createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
+                setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
+                
+                // createPonpminChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.ponpmin));
                 // createProductionChart(Object.keys(datapoints).map(v => new Date(v)), Object.values(datapoints).map(v => v.jumlah));
             }
     }
@@ -105,7 +107,24 @@ function ws_onError(evt) {
     console.log(evt.data);
 }
 
-function createPonpminChart(labels, datapoints) {
+function setChart(chart, label, datapoints) {
+    chart.chart.data.labels = label;
+    chart.chart.data.datasets = datapoints;
+    chart.chart.update();
+}
+
+function createPonpminChart() {
+
+    let dp = {};
+    for (
+        let index = parsedEvt.payload.startHour; 
+        index <= parsedEvt.payload.finishHour; 
+        index+=6e4
+    ) { dp[new Date(index).toISOString()] = 0 }
+
+    const labels = Object.keys(dp).map(v => new Date(v));
+    const datapoints = Object.values(dp);
+
     const chartData = {
         labels: labels,
         datasets: [{
