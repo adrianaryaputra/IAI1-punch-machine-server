@@ -111,7 +111,7 @@ function createPonpminChart(labels, datapoints) {
         datasets: [{
             label: 'Kecepatan Pon (pon/min)',
             data: datapoints,
-            borderColor: "rgba(100,255,100,.8)",
+            borderColor: "rgba(100,255,100,.5)",
             backgroundColor: "rgba(100,255,100,.5)",
             pointRadius: 1,
             fill: true,
