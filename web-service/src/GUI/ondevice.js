@@ -47,32 +47,35 @@ function ws_onMessage(evt) {
             if (parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
             break;
         case "GET_PONPMIN_24H":
-            if(Array.isArray(parsedEvt.payload.bucket)){
-                let ponpmin = parsedEvt.payload.bucket.map(v => {
-                    return {
-                        jam: v._id,
-                        jumlah: v.count,
-                        ponpmin: (v.count / 1).toFixed(2)
-                    }
-                });
-                // console.log("ponpmin", ponpmin);
-                let datapoints = {};
-                for (
-                    let index = parsedEvt.payload.startHour; 
-                    index <= parsedEvt.payload.finishHour; 
-                    index+=6e4
-                ) { datapoints[new Date(index).toISOString()] = {ponpmin: 0, jumlah: 0} }
-                ponpmin.forEach((data) => {
-                    datapoints[data.jam] = {
-                        ponpmin: data.ponpmin,
-                        jumlah: data.jumlah
-                    };
-                });
-                console.log("datapoints", datapoints);
-                setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), [
-                    Object.values(datapoints).map(v => v.ponpmin)
-                ]);
+            if (parsedEvt.device == par.get("name")) {
+                if(Array.isArray(parsedEvt.payload.bucket)){
+                    let ponpmin = parsedEvt.payload.bucket.map(v => {
+                        return {
+                            jam: v._id,
+                            jumlah: v.count,
+                            ponpmin: (v.count / 1).toFixed(2)
+                        }
+                    });
+                    // console.log("ponpmin", ponpmin);
+                    let datapoints = {};
+                    for (
+                        let index = parsedEvt.payload.startHour; 
+                        index <= parsedEvt.payload.finishHour; 
+                        index+=6e4
+                    ) { datapoints[new Date(index).toISOString()] = {ponpmin: 0, jumlah: 0} }
+                    ponpmin.forEach((data) => {
+                        datapoints[data.jam] = {
+                            ponpmin: data.ponpmin,
+                            jumlah: data.jumlah
+                        };
+                    });
+                    console.log("datapoints", datapoints);
+                    setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), [
+                        Object.values(datapoints).map(v => v.ponpmin)
+                    ]);
+                }
             }
+            break;
     }
 }
 
