@@ -17,6 +17,7 @@ function ws_load() {
 }
 
 function ws_send(command, value) {
+    console.log(`WS SENDING ${command}: ${value}`);
     websocket.send(JSON.stringify({
         command,
         value
