@@ -51,6 +51,7 @@ function ws_onMessage(evt) {
                     style: deviceStyle,
                 });
                 console.log("creating", deviceName);
+                ws_send("GET_PONPMIN_24H", deviceName)
                 setInterval(() => ws_send("GET_PONPMIN_24H", deviceName), 60000);
             }
             break;
@@ -72,6 +73,7 @@ function ws_onMessage(evt) {
                     style: deviceStyle,
                 });
                 console.log("creating", deviceName);
+                ws_send("GET_PONPMIN_24H", deviceName)
                 setInterval(() => ws_send("GET_PONPMIN_24H", deviceName), 60000);
             }
             break;
