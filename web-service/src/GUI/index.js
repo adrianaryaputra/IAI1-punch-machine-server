@@ -13,6 +13,7 @@ function ws_load() {
 }
 
 function ws_send(command, value) {
+    console.log(`WS SENDING ${command}: ${value}`);
     websocket.send(JSON.stringify({
         command,
         value
@@ -50,7 +51,7 @@ function ws_onMessage(evt) {
                     style: deviceStyle,
                 });
                 console.log("creating", deviceName);
-                setInterval(() => ws_send("GET_PONPMIN_24H", par.get("name")), 60000);
+                setInterval(() => ws_send("GET_PONPMIN_24H", deviceName), 60000);
             }
             break;
         case "STATE":
@@ -71,7 +72,7 @@ function ws_onMessage(evt) {
                     style: deviceStyle,
                 });
                 console.log("creating", deviceName);
-                setInterval(() => ws_send("GET_PONPMIN_24H", par.get("name")), 60000);
+                setInterval(() => ws_send("GET_PONPMIN_24H", deviceName), 60000);
             }
             break;
         case "GET_PONPMIN_24H":
