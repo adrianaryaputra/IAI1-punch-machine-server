@@ -228,6 +228,7 @@ async function ws_handleIncoming(client, command, value) {
                     }
                 ]);
                 client.send(JSON.stringify({
+                    device: value,
                     command,
                     payload: {
                         startHour: yesterday,
