@@ -204,69 +204,6 @@ function createPonpminChart() {
 }
 
 
-function createProductionChart(labels, datapoints) {
-    const chartData = {
-        labels: labels,
-        datasets: [{
-            label: 'Jumlah Produksi',
-            data: datapoints,
-            borderColor: "rgba(100,255,100,1)",
-            backgroundColor: "rgba(100,255,100,.5)",
-            fill: true,
-            // cubicInterpolationMode: 'monotone',
-            // tension: 0.4
-        }]
-    };
-    
-    const chartConfig = {
-        type: 'bar',
-        data: chartData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: false,
-                    text: 'Jumlah Pon'
-                },
-            },
-            interaction: {
-                intersect: false,
-            },
-            scales: {
-                x: {
-                    type: "time",
-                    time: {
-                        unit: "hour",
-                        tooltipFormat: 'DD/MM/YYYY HH:00'
-                    },
-                    title: {
-                        display: true
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: ''
-                    },
-                    suggestedMin: 0,
-                    suggestedMax: 1000
-                }
-            }
-        },
-    };
-    
-    const testChart = new ChartComponent(chartConfig, {
-        height: "200px"
-    }, {
-        parent: deviceHolder.element(),
-        style: {
-            margin: "2em 1em 1em 1em",
-        }
-    });
-}
-
-
 // PARAM SEARCH
 let par = new URLSearchParams(location.search);
 
