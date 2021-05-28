@@ -4,11 +4,13 @@ export default class Button extends BasicComponent{
     constructor({
         text = "UNK_BUTTON",
         listener = {},
+        buttonStyle = {}
     }, options
     ) {
         super(options);
         this.text = text;
         this.listener = listener;
+        this.buttonStyle = buttonStyle;
         this.draw();
         this.execListener();
     }
@@ -21,7 +23,7 @@ export default class Button extends BasicComponent{
         this.elem.value = document.createElement("h3");
         this.element().appendChild(this.elem.value);
         this.elem.value.innerText = this.text;
-        this.stylize(this.elem.value, {});
+        this.stylize(this.elem.value, this.buttonStyle);
     }
 
     execListener() {

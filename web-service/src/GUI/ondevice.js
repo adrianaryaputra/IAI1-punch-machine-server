@@ -4,6 +4,7 @@ import Indicator from './component/indicator.js';
 import Button from './component/button.js';
 import BasicComponent from './component/basic-component.js';
 import ChartComponent from './component/chart.js';
+import InputDateTime from './component/input-datetime.js';
 
 var wsUri = `ws://${location.hostname}:${+location.port+1}`;
 var websocket = new WebSocket(wsUri);
@@ -17,11 +18,20 @@ function ws_load() {
 }
 
 function ws_send(command, value) {
-    console.log(`WS SENDING ${command}: ${value}`);
-    websocket.send(JSON.stringify({
+    let data = JSON.stringify({
         command,
         value
-    }))
+    });
+    console.log(`WS SENDING ${data}`);
+    websocket.send(data)
+}
+
+function requestPonpminHist(date) {
+    clearInterval(chartUpdateInterval);
+    ws_send("GET_PONPMIN_HIST", {
+        device: par.get("name"),
+        date: date.toISOString()
+    });
 }
 
 let chartUpdateInterval;
@@ -33,7 +43,6 @@ function ws_onOpen(evt) {
 
 function ws_onClose(evt) {
     console.log("websocket closed...");
-    clearInterval(chartUpdateInterval);
     setTimeout(() => location.reload(), 1000);
 }
 
@@ -47,6 +56,7 @@ function ws_onMessage(evt) {
         case "STATE":
             if (parsedEvt.device == par.get("name")) incomingMsg(parsedEvt.payload);
             break;
+        case "GET_PONPMIN_HIST":
         case "GET_PONPMIN_24H":
             if (parsedEvt.device == par.get("name")) {
                 if(Array.isArray(parsedEvt.payload.bucket)){
@@ -114,10 +124,6 @@ function ws_onError(evt) {
 }
 
 function setChart(chart, labels, datapoints) {
-    // console.log("CHART CHART LABEL", chart.chart.data.labels);
-    // console.log("LABELS", labels);
-    // console.log("CHART CHART DATA", chart.chart.data.datasets[0].data);
-    // console.log("DATASET", datapoints);
     console.log("updating chart...");
     chart.chart.data.labels = labels;
     datapoints.forEach((data, dataidx) => {
@@ -219,7 +225,7 @@ const backBtn = new Button({
     style: {
         display: "block",
         textAlign: "left",
-        margin: "1em",
+        padding: "1em 0 0 1em",
         cursor: "pointer",
     }
 })
@@ -263,6 +269,77 @@ const deviceLabelHolder = new BasicComponent({
         gridTemplateColumns: "repeat(auto-fit, minmax(600px, 1fr))",
         gridAutoFlow: "row",
         gap: "1em 2em"
+    }
+});
+
+const dateSelectorHolder = new BasicComponent({
+    parent: deviceHolder.element(),
+    style: {
+        fontSize: "1.5em",
+        margin: "1em 0",
+        display: "grid",
+        gridTemplateColumns: "repeat(2, minmax(600px, 1fr))",
+        gap: "1em 2em",
+    }
+});
+
+const dateSelector = new InputDateTime({
+    label: "Tanggal",
+    value: new Date(),
+},{
+    parent: dateSelectorHolder.element(),
+    style: {}
+});
+
+const findAndUpdateButtonHolder = new BasicComponent({
+    parent: dateSelectorHolder.element(),
+    style: {
+        display: "grid",
+        gridTemplateColumns: "repeat(2, auto)",
+        gap: "1em",
+    }
+});
+
+const findButton = new Button({
+    text: "Go to date",
+    buttonStyle: {
+        display: 'block',
+        width: '100%',
+        padding: '.2em',
+        borderRadius: '.2em',
+        backgroundColor: 'rgba(0,150,0,1)',
+    },
+    listener: {
+        click: () => {
+            console.log("get date", dateSelector.getValue());
+            requestPonpminHist(dateSelector.getValue());
+        },
+    }
+}, {
+    parent: findAndUpdateButtonHolder.element(),
+    style: {
+        textAlign: 'center',
+        cursor: 'pointer',
+    }
+});
+
+const updateButton = new Button({
+    text: "Latest",
+    buttonStyle: {
+        display: 'block',
+        width: '100%',
+        padding: '.2em',
+        borderRadius: '.2em',
+        backgroundColor: 'rgba(150,150,0,1)',
+    },
+    listener: {
+        click: () => location.reload(),
+    }
+}, {
+    parent: findAndUpdateButtonHolder.element(),
+    style: {
+        textAlign: 'center',
+        cursor: 'pointer',
     }
 });
 
