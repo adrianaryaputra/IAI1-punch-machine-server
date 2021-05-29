@@ -212,7 +212,7 @@ async function ws_handleIncoming(client, command, value) {
                     targetdate,
                     yesterday,
                     current,
-                    hourBound
+                    // hourBound
                 }
             }));
             try{
@@ -266,7 +266,7 @@ async function ws_handleIncoming(client, command, value) {
                     targetdate,
                     yesterday,
                     current,
-                    hourBound
+                    // hourBound
                 }
             }));
             try{
