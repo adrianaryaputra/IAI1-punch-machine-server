@@ -199,60 +199,6 @@ async function ws_handleIncoming(client, command, value) {
             }));
             break;
         case "GET_PONPMIN_HIST":
-            targetdate = new Date(value["date"]);
-            yesterday = new Date(+targetdate - (864e5/4));
-            current = new Date(+targetdate + (864e5/4));
-            hourBound = [];
-            for (let index = yesterday; index <= current; index+=6e4) {
-                hourBound.push(new Date(index));
-            }
-            client.send(JSON.stringify({
-                command: "DEBUG",
-                payload: {
-                    targetdate,
-                    yesterday,
-                    current,
-                    // hourBound
-                }
-            }));
-            try{
-                let result = await eventDB.aggregate([
-                    {
-                        $match: {
-                            EVENT: "STATS_PUNCHING",
-                            NAMA_MESIN: value["device"],
-                            TIMESTAMP: {
-                                $gte: new Date(yesterday),
-                                $lte: new Date(current),
-                            },
-                        }
-                    }, {
-                        $bucket: {
-                            groupBy: "$TIMESTAMP",
-                            boundaries: hourBound,
-                            default: "other",
-                            output: {
-                                "count": { $sum: 1 }
-                            }
-                        }
-                    }
-                ]);
-                client.send(JSON.stringify({
-                    device: value["device"],
-                    command,
-                    payload: {
-                        startHour: yesterday,
-                        finishHour: current,
-                        bucket: result
-                    }
-                }))
-            } catch(e) {
-                client.send(JSON.stringify({
-                    command: "ERROR",
-                    payload: e
-                }));
-            }
-            break;
         case "GET_PONPMIN_24H":
             yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
             current = new Date().setSeconds(0,0);
@@ -260,15 +206,6 @@ async function ws_handleIncoming(client, command, value) {
             for (let index = yesterday; index <= current; index+=6e4) {
                 hourBound.push(new Date(index));
             }
-            client.send(JSON.stringify({
-                command: "DEBUG",
-                payload: {
-                    targetdate,
-                    yesterday,
-                    current,
-                    // hourBound
-                }
-            }));
             try{
                 let result = await eventDB.aggregate([
                     {
