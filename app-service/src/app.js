@@ -198,6 +198,52 @@ async function ws_handleIncoming(client, command, value) {
                 payload: deviceState
             }));
             break;
+        case "GET_PONPMIN_HIST":
+            let targetdate = new Date(value["date"]);
+            let startdate = new Date(+targetdate - (864e5/4));
+            let enddate = new Date(+targetdate + (864e5/4));
+            hourBound = [];
+            for (let index = startdate; index <= enddate; index+=6e4) {
+                hourBound.push(new Date(index));
+            }
+            try{
+                let result = await eventDB.aggregate([
+                    {
+                        $match: {
+                            EVENT: "STATS_PUNCHING",
+                            NAMA_MESIN: value["device"],
+                            TIMESTAMP: {
+                                $gte: new Date(startdate),
+                                $lte: new Date(enddate),
+                            },
+                        }
+                    }, {
+                        $bucket: {
+                            groupBy: "$TIMESTAMP",
+                            boundaries: hourBound,
+                            default: "other",
+                            output: {
+                                "count": { $sum: 1 }
+                            }
+                        }
+                    }
+                ]);
+                client.send(JSON.stringify({
+                    device: value["device"],
+                    command,
+                    payload: {
+                        startHour: startdate,
+                        finishHour: enddate,
+                        bucket: result
+                    }
+                }))
+            } catch(e) {
+                client.send(JSON.stringify({
+                    command: "ERROR",
+                    payload: e
+                }));
+            }
+            break;
         case "GET_PONPMIN_24H":
             yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
             current = new Date().setSeconds(0,0);
