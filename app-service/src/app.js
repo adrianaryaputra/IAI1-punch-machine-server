@@ -202,18 +202,19 @@ async function ws_handleIncoming(client, command, value) {
             let targetdate = new Date(value["date"]);
             let startdate = new Date(+targetdate - (864e5/4));
             let enddate = new Date(+targetdate + (864e5/4));
+            let hourBound = [];
+            for (let index = startdate; index <= enddate; index+=6e4) {
+                hourBound.push(new Date(index));
+            }
             client.send(JSON.stringify({
                 command: "DEBUG",
                 payload: {
                     targetdate,
                     startdate,
-                    enddate
+                    enddate,
+                    hourBound,
                 }
             }));
-            hourBound = [];
-            for (let index = startdate; index <= enddate; index+=6e4) {
-                hourBound.push(new Date(index));
-            }
             try{
                 let result = await eventDB.aggregate([
                     {
@@ -253,9 +254,9 @@ async function ws_handleIncoming(client, command, value) {
             }
             break;
         case "GET_PONPMIN_24H":
-            yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
-            current = new Date().setSeconds(0,0);
-            hourBound = [];
+            let yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
+            let current = new Date().setSeconds(0,0);
+            let hourBound = [];
             for (let index = yesterday; index <= current; index+=6e4) {
                 hourBound.push(new Date(index));
             }
