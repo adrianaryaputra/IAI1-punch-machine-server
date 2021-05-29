@@ -48,6 +48,7 @@ export default class InputDateTime extends BasicComponent{
     }
 
     toLocalISODate(date) {
+        console.log(date);
         return `${
             date.getFullYear()}-${
             String(date.getMonth()+1).padStart(2,'0')}-${
