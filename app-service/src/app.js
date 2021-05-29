@@ -254,9 +254,9 @@ async function ws_handleIncoming(client, command, value) {
             }
             break;
         case "GET_PONPMIN_24H":
-            let yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
-            let current = new Date().setSeconds(0,0);
-            let hourBound = [];
+            yesterday = (new Date(Date.now() - (864e5/2))).setSeconds(0,0);
+            current = new Date().setSeconds(0,0);
+            hourBound = [];
             for (let index = yesterday; index <= current; index+=6e4) {
                 hourBound.push(new Date(index));
             }
