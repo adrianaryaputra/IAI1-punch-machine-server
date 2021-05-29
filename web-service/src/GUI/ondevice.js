@@ -84,7 +84,7 @@ function ws_onMessage(evt) {
                     setChart(ponpminChart, Object.keys(datapoints).map(v => new Date(v)), [
                         Object.values(datapoints).map(v => v.ponpmin)
                     ]);
-                    dateSelector.setValue((new Date()).setSeconds(0,0));
+                    dateSelector.setValue(new Date((new Date()).setSeconds(0,0)));
                 }
             }
             break;
