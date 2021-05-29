@@ -206,6 +206,15 @@ async function ws_handleIncoming(client, command, value) {
             for (let index = yesterday; index <= current; index+=6e4) {
                 hourBound.push(new Date(index));
             }
+            client.send(JSON.stringify({
+                command: "DEBUG",
+                payload: {
+                    targetdate,
+                    yesterday,
+                    current,
+                    hourBound
+                }
+            }));
             try{
                 let result = await eventDB.aggregate([
                     {
@@ -251,6 +260,15 @@ async function ws_handleIncoming(client, command, value) {
             for (let index = yesterday; index <= current; index+=6e4) {
                 hourBound.push(new Date(index));
             }
+            client.send(JSON.stringify({
+                command: "DEBUG",
+                payload: {
+                    targetdate,
+                    yesterday,
+                    current,
+                    hourBound
+                }
+            }));
             try{
                 let result = await eventDB.aggregate([
                     {
