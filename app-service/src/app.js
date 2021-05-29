@@ -202,6 +202,14 @@ async function ws_handleIncoming(client, command, value) {
             let targetdate = new Date(value["date"]);
             let startdate = new Date(+targetdate - (864e5/4));
             let enddate = new Date(+targetdate + (864e5/4));
+            client.send(JSON.stringify({
+                command: "DEBUG",
+                payload: {
+                    targetdate,
+                    startdate,
+                    enddate
+                }
+            }));
             hourBound = [];
             for (let index = startdate; index <= enddate; index+=6e4) {
                 hourBound.push(new Date(index));
